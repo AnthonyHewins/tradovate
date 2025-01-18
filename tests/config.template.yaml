@@ -1,0 +1,4 @@
+# Copy/paste me into tests to run integration tests
+# cp tests/config.template.yaml tests/config.yaml
+key: ""
+secret: ""

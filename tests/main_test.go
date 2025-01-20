@@ -16,7 +16,7 @@ type config struct {
 	Secret string `yaml:"secret"`
 }
 
-var client *tradovate.Client
+var client *tradovate.REST
 
 func TestMain(m *testing.M) {
 	if os.Getenv("INTEGRATION") != "1" {
@@ -35,7 +35,7 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
-	client = tradovate.NewClient(tradovate.SandboxURL, &http.Client{Timeout: time.Second * 10}, &tradovate.Creds{
+	client = tradovate.NewREST(tradovate.WSSSandboxURL, &http.Client{Timeout: time.Second * 10}, &tradovate.Creds{
 		Name:       "",
 		Password:   "",
 		AppID:      "",

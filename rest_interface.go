@@ -6,8 +6,9 @@ import (
 	"context"
 )
 
-// RESTInterface is an interface generated for "github.com/AnthonyHewins/tradovate.Client".
+// RESTInterface is an interface generated for "github.com/AnthonyHewins/tradovate.REST".
 type RESTInterface interface {
+	Order(context.Context)
 	SetToken(*Token)
 	Token(context.Context) (*Token, error)
 }

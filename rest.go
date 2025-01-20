@@ -11,11 +11,11 @@ import (
 )
 
 const (
-	Prod = "https://live.tradovateapi.com/v1"
+	RESTProd = "https://live.tradovateapi.com/v1"
 )
 
-//go:generate interfacer -for github.com/AnthonyHewins/tradovate.Client -as tradovate.RESTInterface -o interface.go
-type Client struct {
+//go:generate interfacer -for github.com/AnthonyHewins/tradovate.REST -as tradovate.RESTInterface -o rest_interface.go
+type REST struct {
 	tokenManager
 	baseURL string
 	h       *http.Client
@@ -32,14 +32,14 @@ type Creds struct {
 	Sec        uuid.UUID `json:"sec"`
 }
 
-func NewClient(baseURL string, h *http.Client, o *Creds) *Client {
-	return &Client{
+func NewREST(baseURL string, h *http.Client, o *Creds) *REST {
+	return &REST{
 		tokenManager: tokenManager{creds: o},
 		h:            h,
 	}
 }
 
-func (r *Client) do(ctx context.Context, method, path string, reqBody, target any) error {
+func (r *REST) do(ctx context.Context, method, path string, reqBody, target any) error {
 	buf, err := json.Marshal(reqBody)
 	if err != nil {
 		return err

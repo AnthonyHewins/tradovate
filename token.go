@@ -49,7 +49,7 @@ func (t *tokenManager) SetToken(token *Token) {
 //     when you created the client, it will refresh the token
 //  4. Return the token otherwise, because it exists and isn't going to
 //     expire soon
-func (r *Client) Token(ctx context.Context) (*Token, error) {
+func (r *REST) Token(ctx context.Context) (*Token, error) {
 	r.tokenManager.mu.RLock()
 	x := r.tokenManager.token
 	if x == nil || time.Now().Add(time.Second).After(x.ExpirationTime) {
@@ -92,7 +92,7 @@ func (t *tokenResp) toToken() *Token {
 	}
 }
 
-func (r *Client) newToken(ctx context.Context) (*Token, error) {
+func (r *REST) newToken(ctx context.Context) (*Token, error) {
 	buf, err := json.Marshal(r.tokenManager.creds)
 	if err != nil {
 		return nil, err
@@ -137,7 +137,7 @@ func (r *Client) newToken(ctx context.Context) (*Token, error) {
 	return newToken, nil
 }
 
-func (r *Client) refreshToken(ctx context.Context) (*Token, error) {
+func (r *REST) refreshToken(ctx context.Context) (*Token, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, r.baseURL+"/auth/renewAccessToken", nil)
 	if err != nil {
 		return nil, err

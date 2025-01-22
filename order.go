@@ -6,6 +6,6 @@ func (c *REST) Order(ctx context.Context) {
 
 }
 
-func (s *Socket) Order(ctx context.Context) {
+func (s *WS) Order(ctx context.Context) {
 
 }

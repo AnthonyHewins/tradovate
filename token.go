@@ -9,6 +9,10 @@ import (
 	"time"
 )
 
+const (
+	accessTokenURL = "auth/accessTokenRequest"
+)
+
 // Token is the token response from fetching access tokens.
 // Tokens have a lifespan of 90 minutes
 type Token struct {
@@ -101,7 +105,7 @@ func (r *REST) newToken(ctx context.Context) (*Token, error) {
 	req, err := http.NewRequestWithContext(
 		ctx,
 		http.MethodPost,
-		r.baseURL+"/auth/accessTokenRequest",
+		r.baseURL+"/"+accessTokenURL,
 		bytes.NewReader(buf),
 	)
 	if err != nil {

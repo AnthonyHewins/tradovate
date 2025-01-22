@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/coder/websocket"
 	"github.com/goccy/go-json"
 )
 
@@ -25,7 +26,7 @@ type dataframe struct{ msgs []rawMsg }
 
 func (d dataframe) frameType() frameType { return frameTypeData }
 
-func (s *Socket) readFrame(ctx context.Context) (frame, error) {
+func (s *WS) readFrame(ctx context.Context) (frame, error) {
 	_, binary, err := s.ws.Read(ctx)
 	if err != nil {
 		return nil, err
@@ -57,4 +58,43 @@ type rawMsg struct {
 	ID     int             `json:"i"`
 	Status int             `json:"s"`
 	Data   json.RawMessage `json:"d"`
+}
+
+func (s *WS) keepalive(ctx context.Context) {
+	for {
+		f, err := s.readFrame(ctx)
+		if err != nil {
+			status := websocket.CloseStatus(err)
+			if status == -1 {
+				status = websocket.StatusInternalError
+			}
+
+			s.ws.Close(status, err.Error())
+			return
+		}
+
+		switch f.frameType() {
+		case frameTypeClose:
+			s.ws.Close(0, "close received")
+		case frameTypeData:
+			msgs := f.(dataframe).msgs
+			for i := range msgs {
+				s.fm.pub(&msgs[i])
+			}
+		case frameTypeHeartbeat:
+			s.ping(ctx)
+		case frameTypeOpen:
+			t, err := s.rest.Token(ctx)
+			if err != nil {
+				return
+			}
+			s.do(ctx, accessTokenURL, nil, t.AccessToken, nil)
+		default:
+
+		}
+	}
+}
+
+func (s *WS) ping(ctx context.Context) error {
+	return s.ws.Write(ctx, websocket.MessageText, []byte("[]"))
 }

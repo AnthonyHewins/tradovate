@@ -27,3 +27,17 @@ func newErrFromResp(r *http.Response) error {
 
 	return &e
 }
+
+func newErrFromSocket(r *rawMsg) error {
+	var errmsg string
+	if err := json.Unmarshal(r.Data, &errmsg); err != nil {
+		return fmt.Errorf(
+			"while trying to parse socket err msg with status %d, failed with %w. Raw: %s",
+			r.Status,
+			err,
+			r.Data,
+		)
+	}
+
+	return &Err{Status: r.Status, Body: errmsg}
+}

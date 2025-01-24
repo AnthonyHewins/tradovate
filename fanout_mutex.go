@@ -11,26 +11,28 @@ type fanoutMutex struct {
 	mu       sync.Mutex
 	deadline time.Duration
 	acc      int
-	channels []*fanout
+	channels []*socketReq
 }
 
-type fanout struct {
+type socketReq struct {
 	c        chan *rawMsg
-	deadline time.Duration
+	deadline time.Time
 	id       int
 }
 
-func (f *fanout) wait(ctx context.Context) (*rawMsg, error) {
-	ctx, cancel := context.WithTimeout(ctx, f.deadline)
+func (f *socketReq) wait(userCtx, connCtx context.Context) (*rawMsg, error) {
+	ctx, cancel := context.WithDeadline(userCtx, f.deadline)
 	defer cancel()
 
 	for {
 		select {
-		case <-ctx.Done():
+		case <-connCtx.Done():
+			return nil, fmt.Errorf("websocket connection killed: %w", ctx.Err())
+		case <-userCtx.Done():
 			return nil, ctx.Err()
 		case v := <-f.c:
 			if v == nil {
-				return nil, fmt.Errorf("race condition error? received nil *rawMsg")
+				return nil, fmt.Errorf("channel closed early; timeout")
 			}
 
 			return v, nil
@@ -38,13 +40,13 @@ func (f *fanout) wait(ctx context.Context) (*rawMsg, error) {
 	}
 }
 
-func (f *fanoutMutex) request() *fanout {
+func (f *fanoutMutex) request() *socketReq {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 
-	c := &fanout{
+	c := &socketReq{
 		c:        make(chan *rawMsg, 1),
-		deadline: f.deadline,
+		deadline: time.Now().Add(f.deadline),
 		id:       f.acc,
 	}
 	f.acc++
@@ -57,16 +59,23 @@ func (f *fanoutMutex) pub(r *rawMsg) {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 
-	for i, v := range f.channels {
-		if v.id != r.ID {
+	goodPtr, n := 0, len(f.channels)
+	for i := 0; i < n; i++ {
+		v := f.channels[i]
+		if v.deadline.Before(time.Now()) {
+			close(v.c)
 			continue
 		}
 
-		v.c <- r
-		close(v.c)
-		n := len(f.channels)
-		f.channels[i] = f.channels[n-1]
-		f.channels = f.channels[:n-1]
-		return
+		if v.id == r.ID {
+			v.c <- r
+			close(v.c)
+			continue
+		}
+
+		f.channels[goodPtr] = v
+		goodPtr++
 	}
+
+	f.channels = f.channels[:goodPtr]
 }

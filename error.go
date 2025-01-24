@@ -15,6 +15,11 @@ func (e *Err) Error() string {
 	return fmt.Sprintf("HTTP %d: %s", e.Status, e.Body)
 }
 
+func (e *Err) Is(err error) bool {
+	_, ok := err.(*Err)
+	return ok
+}
+
 func newErrFromResp(r *http.Response) error {
 	var e Err
 	if err := json.NewDecoder(r.Body).Decode(&e); err != nil {

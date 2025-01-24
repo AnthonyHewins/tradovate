@@ -62,39 +62,75 @@ type rawMsg struct {
 
 func (s *WS) keepalive(ctx context.Context) {
 	for {
-		f, err := s.readFrame(ctx)
+		closeDetails, err := s.keepaliveEvent(ctx)
 		if err != nil {
-			status := websocket.CloseStatus(err)
-			if status == -1 {
-				status = websocket.StatusInternalError
-			}
-
-			s.ws.Close(status, err.Error())
-			return
+			s.errHandler(err)
 		}
-
-		switch f.frameType() {
-		case frameTypeClose:
-			s.ws.Close(0, "close received")
-		case frameTypeData:
-			msgs := f.(dataframe).msgs
-			for i := range msgs {
-				s.fm.pub(&msgs[i])
-			}
-		case frameTypeHeartbeat:
-			s.ping(ctx)
-		case frameTypeOpen:
-			t, err := s.rest.Token(ctx)
-			if err != nil {
-				return
-			}
-			s.do(ctx, accessTokenURL, nil, t.AccessToken, nil)
-		default:
-
+		if closeDetails.status != 0 {
+			s.connCancel()
+			s.ws.Close(closeDetails.status, closeDetails.msg)
+			return
 		}
 	}
 }
 
-func (s *WS) ping(ctx context.Context) error {
-	return s.ws.Write(ctx, websocket.MessageText, []byte("[]"))
+type closeWith struct {
+	status websocket.StatusCode
+	msg    string
+}
+
+func (s *WS) keepaliveEvent(ctx context.Context) (closeWith, error) {
+	f, err := s.readFrame(ctx)
+	if err != nil {
+		status := websocket.CloseStatus(err)
+		if status == -1 || status == 0 {
+			status = websocket.StatusInternalError
+		}
+
+		return closeWith{status, err.Error()}, err
+	}
+
+	switch f.frameType() {
+	case frameTypeClose:
+		return closeWith{websocket.StatusNormalClosure, "server closed conn"}, nil
+	case frameTypeData:
+		msgs := f.(dataframe).msgs
+		for i := range msgs {
+			s.fm.pub(&msgs[i])
+		}
+	case frameTypeHeartbeat:
+		if err = s.ping(ctx); err != nil {
+			return closeWith{
+				3008, // timeout
+				fmt.Sprintf("failed to ping after %d attempts", s.pingRetries),
+			}, err
+		}
+	case frameTypeOpen:
+		t, err := s.rest.Token(ctx)
+		if err != nil {
+			return closeWith{3000, "could not fetch auth token"}, err
+		}
+
+		if err = s.do(ctx, accessTokenURL, nil, t.AccessToken, nil); err != nil {
+			return closeWith{3000, "unable to send auth token over socket"}, err
+		}
+	default:
+		return closeWith{
+			websocket.StatusInternalError,
+			"invalid frame code received",
+		}, fmt.Errorf("invalid frame type: %v", f.frameType())
+	}
+
+	return closeWith{}, nil
+}
+
+func (s *WS) ping(ctx context.Context) (err error) {
+	var i uint8 = 0
+	for ; i < s.pingRetries; i++ {
+		if err = s.ws.Write(ctx, websocket.MessageText, []byte("[]")); err == nil {
+			return nil
+		}
+	}
+
+	return err
 }

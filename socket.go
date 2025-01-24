@@ -30,13 +30,33 @@ func WithTimeout(t time.Duration) WSOpt {
 	return func(s *WS) { s.fm.deadline = t }
 }
 
+func WithErrHandler(fn func(error)) WSOpt {
+	return func(s *WS) { s.errHandler = fn }
+}
+
+// How many times to retry pings until the websocket
+// will assume a dead connection. Defaults to 5
+func WithPingRetries(x uint8) WSOpt {
+	return func(s *WS) {
+		if x == 0 {
+			x++
+		}
+		s.pingRetries = x
+	}
+}
+
 // Websocket client to the tradovate API
 //
 //go:generate interfacer -for github.com/AnthonyHewins/tradovate.Socket -as tradovate.SocketInterface -o socket_interface.go
 type WS struct {
-	rest *REST
-	ws   *websocket.Conn
-	fm   fanoutMutex
+	connCtx    context.Context
+	connCancel context.CancelFunc
+
+	pingRetries uint8
+	rest        *REST
+	ws          *websocket.Conn
+	fm          fanoutMutex
+	errHandler  func(error)
 }
 
 func NewSocket(ctx context.Context, uri string, dialOpts *websocket.DialOptions, rest *REST, opts ...WSOpt) (*WS, error) {
@@ -49,17 +69,27 @@ func NewSocket(ctx context.Context, uri string, dialOpts *websocket.DialOptions,
 		return nil, err
 	}
 
+	connCtx, cancel := context.WithCancel(ctx)
+
 	s := &WS{
-		rest: rest,
-		ws:   ws,
-		fm:   fanoutMutex{deadline: time.Second * 5},
+		pingRetries: 5,
+		connCtx:     connCtx,
+		connCancel:  cancel,
+		rest:        rest,
+		ws:          ws,
+		fm: fanoutMutex{
+			acc:      1,
+			deadline: time.Second * 5,
+		},
+		errHandler: func(err error) {
+		},
 	}
 
 	for _, v := range opts {
 		v(s)
 	}
 
-	go s.keepalive(ctx)
+	go s.keepalive(connCtx)
 	return s, nil
 }
 
@@ -94,7 +124,7 @@ func (s *WS) do(ctx context.Context, path string, queryParams url.Values, body, 
 		return err
 	}
 
-	resp, err := mu.wait(ctx)
+	resp, err := mu.wait(ctx, s.connCtx)
 	if err != nil {
 		return err
 	}

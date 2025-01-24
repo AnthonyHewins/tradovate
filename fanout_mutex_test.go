@@ -115,7 +115,7 @@ func TestPub(mainTest *testing.T) {
 			},
 		},
 		{
-			name: "example with various removals (unrealistic state, but also still recovers)",
+			name: "example with various removals: removing several invalids, and ID#27 (unrealistic state, but also still recovers)",
 			msg:  &rawMsg{ID: 27},
 			start: &fanoutMutex{
 				channels: []*socketReq{
@@ -162,11 +162,18 @@ func TestPub(mainTest *testing.T) {
 	for _, tc := range testCases {
 		mainTest.Run(tc.name, func(tt *testing.T) {
 			tc.start.pub(tc.msg)
-			if tc.start.equal(tc.end) {
+			if !tc.start.equal(tc.end) {
+				tt.Errorf(
+					"final state not correct\nexpected: %+v\nactual: %+v",
+					tc.end,
+					tc.start,
+				)
 				return
 			}
 
-			tt.Errorf("final state not correct\nexpected: %+v\nactual: %+v", tc.end, tc.start)
+			for _, v := range tc.start.channels {
+				close(v.c) // if it panics, this is a problem
+			}
 		})
 	}
 }

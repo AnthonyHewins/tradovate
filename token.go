@@ -56,7 +56,7 @@ func (t *tokenManager) SetToken(token *Token) {
 func (r *REST) Token(ctx context.Context) (*Token, error) {
 	r.tokenManager.mu.RLock()
 	x := r.tokenManager.token
-	if x == nil || time.Now().Add(time.Second).After(x.ExpirationTime) {
+	if x == nil || time.Now().Add(time.Millisecond*20).After(x.ExpirationTime) {
 		r.tokenManager.mu.RUnlock()
 		return r.newToken(ctx)
 	}

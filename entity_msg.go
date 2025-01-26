@@ -1,0 +1,200 @@
+package tradovate
+
+import (
+	"encoding/json"
+)
+
+//go:generate enumer -type EventType -json -trimprefix EventType
+type EventType byte
+
+const (
+	EventTypeUnspecified EventType = iota
+	EventTypeCreated
+	EventTypeUpdated
+	EventTypeDeleted
+)
+
+//go:generate enumer -type EntityType -trimprefix EntityMsg -json
+type EntityType byte
+
+// TODO this list is way too long but I have no list of entity types
+// from their docs. So this is the best I can do to make it simple for
+// the end user and not store giant strings but just a byte
+const (
+	EntityTypeUnspecified EntityType = iota
+	EntityTypeTradeTime
+	EntityTypeTradeDate
+	EntityTypeAcceptTradingPermission
+	// EntityTypeAccessTokenRequest
+	// EntityTypeAccessTokenResponse
+	EntityTypeAccount
+	EntityTypeAccountRiskStatus
+	EntityTypeAccountRiskStatusResponse
+	EntityTypeActivateSecondMarketDataSubscriptionRenewal
+	EntityTypeAddEntitlementSubscription
+	EntityTypeAddMarketDataSubscription
+	EntityTypeAddSecondMarketDataSubscription
+	EntityTypeAddTradovateSubscription
+	EntityTypeAdminAlert
+	EntityTypeAdminAlertSignal
+	EntityTypeAdminAlertSignalResponse
+	EntityTypeAlert
+	EntityTypeAlertResponse
+	EntityTypeAlertSignal
+	EntityTypeCancelEverything
+	EntityTypeCancelEverythingResponse
+	EntityTypeCancelOrder
+	EntityTypeCancelSecondMarketDataSubscription
+	EntityTypeCancelSecondMarketDataSubscriptionRenewal
+	EntityTypeCancelTradovateSubscription
+	EntityTypeCashBalance
+	EntityTypeCashBalanceLog
+	EntityTypeCashBalanceSnapshot
+	EntityTypeChangePluginPermission
+	EntityTypeChangeSpeed
+	EntityTypeChat
+	EntityTypeChatMessage
+	EntityTypeChatMessageResponse
+	EntityTypeChatResponse
+	EntityTypeCheckReplaySession
+	EntityTypeCheckReplaySessionResponse
+	EntityTypeCheckStripeFundingEligibility
+	EntityTypeCheckStripeFundingEligibilityResponse
+	EntityTypeClearingHouse
+	EntityTypeCloseChat
+	EntityTypeCommand
+	EntityTypeCommandReport
+	EntityTypeCommandResult
+	EntityTypeCompleteAlertSignal
+	EntityTypeContactInfo
+	EntityTypeContract
+	EntityTypeContractGroup
+	EntityTypeContractMargin
+	EntityTypeContractMaturity
+	EntityTypeCreateAlert
+	EntityTypeCreateEvaluationAccountResponse
+	EntityTypeCreateEvaluationAccounts
+	EntityTypeCreateEvaluationAccountsResponse
+	EntityTypeCreateEvaluationUserResponse
+	EntityTypeCreateEvaluationUsers
+	EntityTypeCreateEvaluationUsersResponse
+	EntityTypeCreateTradingPermission
+	EntityTypeCurrency
+	EntityTypeCurrencyRate
+	EntityTypeDeleteAlert
+	EntityTypeDeleteResultResponse
+	EntityTypeDeleteUserAccountPositionLimit
+	EntityTypeDeleteUserAccountRiskParameter
+	EntityTypeDismissAlert
+	EntityTypeEntitlement
+	EntityTypeEntitlementSubscriptionResponse
+	EntityTypeEvaluationAccount
+	EntityTypeEvaluationUser
+	EntityTypeExchange
+	EntityTypeExecutionReport
+	EntityTypeFill
+	EntityTypeFillFee
+	EntityTypeFillPair
+	EntityTypeGetAccountTradingPermissions
+	EntityTypeGetCashBalanceSnapshot
+	EntityTypeGetProductFeeParams
+	EntityTypeGetSecondMarketDataSubscriptionCost
+	EntityTypeInitializeClock
+	EntityTypeInterruptOrderStrategy
+	EntityTypeLiquidatePosition
+	EntityTypeLiquidatePositions
+	EntityTypeMarginSnapshot
+	EntityTypeMarkAsReadChatMessage
+	EntityTypeMarkReadAlertSignal
+	EntityTypeMarketDataSubscription
+	EntityTypeMarketDataSubscriptionExchangeScope
+	EntityTypeMarketDataSubscriptionPlan
+	EntityTypeMarketDataSubscriptionResponse
+	EntityTypeMe
+	EntityTypeModifyAlert
+	EntityTypeModifyCredentials
+	EntityTypeModifyEmailAddress
+	EntityTypeModifyOrder
+	EntityTypeModifyOrderStrategy
+	// EntityTypeModifyPassword
+	EntityTypeOAuthMeResponse
+	EntityTypeOAuthToken
+	EntityTypeOAuthTokenResponse
+	EntityTypeOpenDemoAccount
+	EntityTypeOpenDemoAccountResponse
+	EntityTypeOrder
+	EntityTypeOrderStrategy
+	EntityTypeOrderStrategyLink
+	EntityTypeOrderStrategyStatusResponse
+	EntityTypeOrderStrategyType
+	EntityTypeOrderVersion
+	EntityTypeOrganization
+	EntityTypePermissionedAccountAutoLiq
+	EntityTypePlaceOCO
+	EntityTypePlaceOSO
+	EntityTypePlaceOcoResult
+	EntityTypePlaceOrder
+	EntityTypePlaceOrderResult
+	EntityTypePlaceOsoResult
+	EntityTypePosition
+	EntityTypePostChatMessage
+	EntityTypePostTradeRisk
+	EntityTypePreTradeRisk
+	EntityTypePreTradeRiskParameter
+	EntityTypeProduct
+	EntityTypeProductFeeParams
+	EntityTypeProductFeeParamsResponse
+	EntityTypeProductMargin
+	EntityTypeProductSession
+	EntityTypeProperty
+	EntityTypeRenewAccessToken
+	EntityTypeRequestTradingPermission
+	EntityTypeResetAlert
+	EntityTypeResetAutoLiqStatus
+	EntityTypeResetDemoAccountState
+	EntityTypeRestrainedOrderVersion
+	EntityTypeRevokeTradingPermission
+	EntityTypeRevokeTradingPermissions
+	EntityTypeRollContract
+	EntityTypeRollContractBase
+	EntityTypeRollContractResponse
+	EntityTypeRollContracts
+	EntityTypeRollContractsResponse
+	EntityTypeSecondMarketDataSubscription
+	EntityTypeSecondMarketDataSubscriptionCostResponse
+	EntityTypeSecondMarketDataSubscriptionResponse
+	EntityTypeSetAccountNotes
+	EntityTypeSetAdminAutoLiqAction
+	EntityTypeSignUpOrganizationMember
+	EntityTypeSignUpResponse
+	EntityTypeSimpleResponse
+	EntityTypeSpreadDefinition
+	EntityTypeStartOrderStrategy
+	EntityTypeSyncMessage
+	EntityTypeSyncRequest
+	EntityTypeTakeAlertSignalOwnership
+	EntityTypeTradingPermission
+	EntityTypeTradingPermissionResponse
+	EntityTypeTradingPermissionsResponse
+	EntityTypeTradovateSubscription
+	EntityTypeTradovateSubscriptionPlan
+	EntityTypeTradovateSubscriptionResponse
+	EntityTypeUpdateMaxNetLiq
+	EntityTypeUpdateUserAutoLiq
+	EntityTypeUpdateUserAutoLiqResponse
+	EntityTypeUser
+	EntityTypeUserAccountAutoLiq
+	EntityTypeUserAccountPositionLimit
+	EntityTypeUserAccountRiskParameter
+	EntityTypeUserPlugin
+	EntityTypeUserProperty
+	EntityTypeUserSession
+	EntityTypeUserSessionStats
+	EntityTypeUserStatusMessage
+)
+
+type EntityMsg struct {
+	Event EventType       `json:"eventType"`
+	Type  EntityType      `json:"entityType"`
+	Data  json.RawMessage `json:"entity"`
+}

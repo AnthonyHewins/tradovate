@@ -11,6 +11,7 @@ import (
 
 const (
 	accessTokenURL = "auth/accessTokenRequest"
+	renewTokenURL  = "auth/renewAccessToken"
 )
 
 // Token is the token response from fetching access tokens.
@@ -121,7 +122,7 @@ func (r *REST) newToken(ctx context.Context) (*Token, error) {
 	}
 
 	if resp.StatusCode != 200 {
-		return nil, newErrFromResp(resp)
+		return nil, newRespErrFromREST(resp)
 	}
 
 	var t tokenResp
@@ -130,7 +131,7 @@ func (r *REST) newToken(ctx context.Context) (*Token, error) {
 	}
 
 	if t.ErrorText != "" {
-		return nil, &Err{Status: 200, Body: t.ErrorText}
+		return nil, &RespErr{Status: 200, Body: t.ErrorText}
 	}
 
 	newToken := t.toToken()
@@ -142,7 +143,12 @@ func (r *REST) newToken(ctx context.Context) (*Token, error) {
 }
 
 func (r *REST) refreshToken(ctx context.Context) (*Token, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, r.baseURL+"/auth/renewAccessToken", nil)
+	req, err := http.NewRequestWithContext(
+		ctx,
+		http.MethodGet,
+		r.baseURL+"/"+renewTokenURL,
+		nil,
+	)
 	if err != nil {
 		return nil, err
 	}

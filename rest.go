@@ -14,7 +14,6 @@ const (
 	RESTProd = "https://live.tradovateapi.com/v1"
 )
 
-//go:generate interfacer -for github.com/AnthonyHewins/tradovate.REST -as tradovate.RESTInterface -o rest_interface.go
 type REST struct {
 	tokenManager
 	baseURL string
@@ -71,7 +70,7 @@ func (r *REST) do(ctx context.Context, method, path string, reqBody, target any)
 	}
 
 	if resp.StatusCode >= 300 {
-		return newErrFromResp(resp)
+		return newRespErrFromREST(resp)
 	}
 
 	if err = json.NewDecoder(resp.Body).Decode(target); err != nil {

@@ -24,10 +24,14 @@ func (t *Token) equal(x *Token) bool {
 func TestToken(mainTest *testing.T) {
 	validTokenResp1 := &tokenResp{
 		AccessToken:    "a",
-		ExpirationTime: time.Now().Add(time.Minute).UTC(),
+		ExpirationTime: time.Now().Add(time.Hour * 2).UTC(),
 	}
 	validToken1 := validTokenResp1.toToken()
-	// tokenDueForRefresh := Token{AccessToken: "b"}
+
+	tokenDueForRefresh := &Token{
+		AccessToken:    "b",
+		ExpirationTime: time.Now().Add(time.Hour),
+	}
 	// expiredToken := Token{AccessToken: "b"}
 
 	testCases := []struct {
@@ -45,22 +49,30 @@ func TestToken(mainTest *testing.T) {
 			name:     "with no access token, fetches new one",
 			expected: validToken1,
 
-			mockStatus: 200,
-			mock:       validTokenResp1,
+			expectedEndpoint: accessTokenURL,
+			mockStatus:       200,
+			mock:             validTokenResp1,
 		},
-		// {
-		// 	name:     "",
-		// 	expected: validToken1,
+		{
+			name:     "with token that needs refresh, it refreshes",
+			start:    tokenDueForRefresh,
+			expected: validToken1,
 
-		// 	mockStatus: 200,
-		// 	mock:       validTokenResp1,
-		// },
+			expectedEndpoint: renewTokenURL,
+			mockStatus:       200,
+			mock:             validTokenResp1,
+		},
+		{
+			name:     "with token that's good for usage, doesnt fetch anything",
+			start:    validToken1,
+			expected: validToken1,
+		},
 	}
 
 	for _, tc := range testCases {
 		mainTest.Run(tc.name, func(tt *testing.T) {
 			s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				if !strings.Contains(r.RequestURI, tc.expectedEndpoint) {
+				if tc.expectedEndpoint == "" || !strings.Contains(r.RequestURI, tc.expectedEndpoint) {
 					w.WriteHeader(500)
 					w.Write([]byte(
 						fmt.Sprintf(
@@ -85,7 +97,7 @@ func TestToken(mainTest *testing.T) {
 			r := REST{
 				baseURL: s.URL,
 				tokenManager: tokenManager{
-					forceRefreshDeadline: 0,
+					forceRefreshDeadline: time.Hour,
 					token:                tc.start,
 				},
 				h: &http.Client{},

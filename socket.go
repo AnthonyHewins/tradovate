@@ -45,9 +45,18 @@ func WithPingRetries(x uint8) WSOpt {
 	}
 }
 
+// All entity events the server propagates that don't have to
+// do with request-response will be called here
+func WithEntityHandler(x func(*EntityMsg)) WSOpt {
+	return func(s *WS) { s.entityHandler = x }
+}
+
+// All chart messages will be received by this handler
+func WithChartHandler(x func(*Chart)) WSOpt {
+	return func(s *WS) { s.chartHandler = x }
+}
+
 // Websocket client to the tradovate API
-//
-//go:generate interfacer -for github.com/AnthonyHewins/tradovate.Socket -as tradovate.SocketInterface -o socket_interface.go
 type WS struct {
 	connCtx    context.Context
 	connCancel context.CancelFunc
@@ -56,7 +65,10 @@ type WS struct {
 	rest        *REST
 	ws          *websocket.Conn
 	fm          fanoutMutex
-	errHandler  func(error)
+
+	entityHandler func(*EntityMsg)
+	chartHandler  func(*Chart)
+	errHandler    func(error)
 }
 
 func NewSocket(ctx context.Context, uri string, dialOpts *websocket.DialOptions, rest *REST, opts ...WSOpt) (*WS, error) {
@@ -81,8 +93,9 @@ func NewSocket(ctx context.Context, uri string, dialOpts *websocket.DialOptions,
 			acc:      1,
 			deadline: time.Second * 5,
 		},
-		errHandler: func(err error) {
-		},
+		entityHandler: func(em *EntityMsg) {},
+		chartHandler:  func(cr *Chart) {},
+		errHandler:    func(err error) {},
 	}
 
 	for _, v := range opts {
@@ -130,7 +143,7 @@ func (s *WS) do(ctx context.Context, path string, queryParams url.Values, body, 
 	}
 
 	if resp.Status >= 300 {
-		return newErrFromSocket(resp)
+		return newRespErrFromSocket(resp)
 	}
 
 	if target != nil {

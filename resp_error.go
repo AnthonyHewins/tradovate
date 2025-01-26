@@ -3,37 +3,39 @@ package tradovate
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 )
 
-type Err struct {
+type RespErr struct {
 	Status int
 	Body   string
 }
 
-func (e *Err) Error() string {
+func (e *RespErr) Error() string {
 	return fmt.Sprintf("HTTP %d: %s", e.Status, e.Body)
 }
 
-func (e *Err) Is(err error) bool {
-	_, ok := err.(*Err)
+func (e *RespErr) Is(err error) bool {
+	_, ok := err.(*RespErr)
 	return ok
 }
 
-func newErrFromResp(r *http.Response) error {
-	var e Err
-	if err := json.NewDecoder(r.Body).Decode(&e); err != nil {
+func newRespErrFromREST(r *http.Response) error {
+	buf, err := io.ReadAll(r.Body)
+	if err != nil {
 		return fmt.Errorf(
 			"while trying to read error response (HTTP %d) got err %w",
 			r.StatusCode,
 			err,
 		)
 	}
+	r.Body.Close()
 
-	return &e
+	return &RespErr{Status: r.StatusCode, Body: string(buf)}
 }
 
-func newErrFromSocket(r *rawMsg) error {
+func newRespErrFromSocket(r *rawMsg) error {
 	var errmsg string
 	if err := json.Unmarshal(r.Data, &errmsg); err != nil {
 		return fmt.Errorf(
@@ -44,5 +46,5 @@ func newErrFromSocket(r *rawMsg) error {
 		)
 	}
 
-	return &Err{Status: r.Status, Body: errmsg}
+	return &RespErr{Status: r.Status, Body: errmsg}
 }

@@ -2,7 +2,6 @@ package tradovate
 
 import (
 	"context"
-	"fmt"
 	"time"
 )
 
@@ -53,10 +52,10 @@ type OcoResp struct {
 
 func (s *WS) OCO(ctx context.Context, o *OcoReq) (*OcoResp, error) {
 	type ocoResp struct {
-		FailReason string `json:"failureReason"`
-		FailText   string `json:"failureText"`
-		OrderID    uint   `json:"orderId"`
-		OcoID      uint   `json:"ocoId"`
+		FailReason OrderErrReason `json:"failureReason"`
+		FailText   string         `json:"failureText"`
+		OrderID    uint           `json:"orderId"`
+		OcoID      uint           `json:"ocoId"`
 	}
 
 	var x ocoResp
@@ -64,9 +63,9 @@ func (s *WS) OCO(ctx context.Context, o *OcoReq) (*OcoResp, error) {
 		return nil, err
 	}
 
-	if x.FailReason == "" {
+	if x.FailReason == OrderErrReasonAccountUnspecified {
 		return &OcoResp{OrderID: x.OrderID, OcoID: x.OcoID}, nil
 	}
 
-	return nil, fmt.Errorf("%s: %s", x.FailReason, x.FailText)
+	return nil, &OrderErr{Reason: x.FailReason, Text: x.FailText}
 }

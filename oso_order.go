@@ -2,7 +2,6 @@ package tradovate
 
 import (
 	"context"
-	"fmt"
 	"time"
 )
 
@@ -38,11 +37,11 @@ type OsoResp struct {
 
 func (s *WS) OSO(ctx context.Context, o *OsoReq) (*OsoResp, error) {
 	type osoResp struct {
-		FailReason string `json:"failureReason"`
-		FailText   string `json:"failureText"`
-		OrderID    uint   `json:"orderId"`
-		OsoID1     uint   `json:"osoId1"`
-		OsoID2     uint   `json:"osoId2"`
+		FailReason OrderErrReason `json:"failureReason"`
+		FailText   string         `json:"failureText"`
+		OrderID    uint           `json:"orderId"`
+		OsoID1     uint           `json:"osoId1"`
+		OsoID2     uint           `json:"osoId2"`
 	}
 
 	var x osoResp
@@ -50,8 +49,8 @@ func (s *WS) OSO(ctx context.Context, o *OsoReq) (*OsoResp, error) {
 		return nil, err
 	}
 
-	if x.FailReason == "" {
-		return nil, fmt.Errorf("%s: %s", x.FailReason, x.FailText)
+	if x.FailReason == OrderErrReasonAccountUnspecified {
+		return nil, &OrderErr{Reason: x.FailReason, Text: x.FailText}
 	}
 
 	return &OsoResp{OrderID: x.OrderID, Oso1ID: x.OsoID1, Oso2ID: x.OsoID2}, nil

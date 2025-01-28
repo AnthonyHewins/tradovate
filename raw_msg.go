@@ -50,6 +50,15 @@ func (r *rawMsg) chart() (*Chart, error) {
 	return &c, nil
 }
 
+func (r *rawMsg) marketData() (*MarketData, error) {
+	var md MarketData
+	if err := json.Unmarshal(r.Data, &md); err != nil {
+		return nil, err
+	}
+
+	return &md, nil
+}
+
 func (r *rawMsg) shutdownMsg() (*ShutdownMsg, error) {
 	var s ShutdownMsg
 	if err := json.Unmarshal(r.Data, &s); err != nil {

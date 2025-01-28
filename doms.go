@@ -17,10 +17,6 @@ type DOM struct {
 	Offers     []PriceQty `json:"offers"`
 }
 
-type doms struct {
-	Doms []*DOM `json:"doms"`
-}
-
 func (s *WS) SubscribeDOMSymbol(ctx context.Context, symbol string) error {
 	return s.subscribeDOM(ctx, symbol)
 }

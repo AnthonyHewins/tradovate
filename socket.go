@@ -47,13 +47,24 @@ func WithPingRetries(x uint8) WSOpt {
 
 // All entity events the server propagates that don't have to
 // do with request-response will be called here
+//
+// Each call will run as a goroutine
 func WithEntityHandler(x func(*EntityMsg)) WSOpt {
 	return func(s *WS) { s.entityHandler = x }
 }
 
 // All chart messages will be received by this handler
+//
+// Each call will run as a goroutine
 func WithChartHandler(x func(*Chart)) WSOpt {
 	return func(s *WS) { s.chartHandler = x }
+}
+
+// Handle market data
+//
+// Each call will run as a goroutine
+func WithMarketDataHandler(x func(*MarketData)) WSOpt {
+	return func(s *WS) { s.marketDataHandler = x }
 }
 
 // Websocket client to the tradovate API
@@ -66,9 +77,10 @@ type WS struct {
 	ws          *websocket.Conn
 	fm          fanoutMutex
 
-	entityHandler func(*EntityMsg)
-	chartHandler  func(*Chart)
-	errHandler    func(error)
+	entityHandler     func(*EntityMsg)
+	chartHandler      func(*Chart)
+	marketDataHandler func(*MarketData)
+	errHandler        func(error)
 }
 
 func NewSocket(ctx context.Context, uri string, dialOpts *websocket.DialOptions, rest *REST, opts ...WSOpt) (*WS, error) {
@@ -93,9 +105,10 @@ func NewSocket(ctx context.Context, uri string, dialOpts *websocket.DialOptions,
 			acc:      1,
 			deadline: time.Second * 5,
 		},
-		entityHandler: func(em *EntityMsg) {},
-		chartHandler:  func(cr *Chart) {},
-		errHandler:    func(err error) {},
+		entityHandler:     func(em *EntityMsg) {},
+		chartHandler:      func(cr *Chart) {},
+		marketDataHandler: func(md *MarketData) {},
+		errHandler:        func(err error) {},
 	}
 
 	for _, v := range opts {

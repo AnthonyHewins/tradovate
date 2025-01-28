@@ -19,25 +19,16 @@ type Histogram struct {
 	Refresh    bool               `json:"refresh"`
 }
 
-func (s *WS) SubscribeHistogramID(ctx context.Context, id int) ([]*Histogram, error) {
+func (s *WS) SubscribeHistogramID(ctx context.Context, id int) error {
 	return s.subscribeHistogram(ctx, id)
 }
 
-func (s *WS) SubscribeHistogramSymbol(ctx context.Context, symbol string) ([]*Histogram, error) {
+func (s *WS) SubscribeHistogramSymbol(ctx context.Context, symbol string) error {
 	return s.subscribeHistogram(ctx, symbol)
 }
 
-func (s *WS) subscribeHistogram(ctx context.Context, x any) ([]*Histogram, error) {
-	type histogram struct {
-		H []*Histogram `json:"histograms"`
-	}
-
-	var h histogram
-	if err := s.do(ctx, subscribeHistogram, nil, map[string]any{"symbol": x}, &h); err != nil {
-		return nil, err
-	}
-
-	return h.H, nil
+func (s *WS) subscribeHistogram(ctx context.Context, x any) error {
+	return s.do(ctx, subscribeHistogram, nil, map[string]any{"symbol": x}, nil)
 }
 
 func (s *WS) UnsubscribeHistogramID(ctx context.Context, id int) error {

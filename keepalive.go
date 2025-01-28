@@ -14,15 +14,29 @@ var (
 
 func (s *WS) keepalive(ctx context.Context) {
 	for {
-		closeDetails, err := s.keepaliveEvent(ctx)
+		f, err := s.readFrame(ctx)
 		if err != nil {
+			status := websocket.CloseStatus(err)
+			if status == -1 || status == 0 {
+				status = websocket.StatusInternalError
+			}
+
 			s.errHandler(err)
-		}
-		if closeDetails.status != 0 {
-			s.connCancel()
-			s.ws.Close(closeDetails.status, closeDetails.msg)
+			s.ws.Close(status, err.Error())
 			return
 		}
+
+		go func(ctx context.Context, f frame) {
+			closeDetails, err := s.keepaliveEvent(ctx, f)
+			if err != nil {
+				s.errHandler(err)
+			}
+			if closeDetails.status != 0 {
+				s.connCancel()
+				s.ws.Close(closeDetails.status, closeDetails.msg)
+				return
+			}
+		}(ctx, f)
 	}
 }
 
@@ -31,17 +45,7 @@ type closeWith struct {
 	msg    string
 }
 
-func (s *WS) keepaliveEvent(ctx context.Context) (closeWith, error) {
-	f, err := s.readFrame(ctx)
-	if err != nil {
-		status := websocket.CloseStatus(err)
-		if status == -1 || status == 0 {
-			status = websocket.StatusInternalError
-		}
-
-		return closeWith{status, err.Error()}, err
-	}
-
+func (s *WS) keepaliveEvent(ctx context.Context, f frame) (closeWith, error) {
 	switch f.frameType() {
 	case frameTypeClose:
 		return closeWith{websocket.StatusNormalClosure, "server closed conn"}, nil
@@ -49,7 +53,7 @@ func (s *WS) keepaliveEvent(ctx context.Context) (closeWith, error) {
 		msgs := f.(dataframe).msgs
 		return s.handleDataframe(msgs)
 	case frameTypeHeartbeat:
-		if err = s.ping(ctx); err != nil {
+		if err := s.ping(ctx); err != nil {
 			return closeWith{
 				3008, // timeout
 				fmt.Sprintf("failed to ping after %d attempts", s.pingRetries),
@@ -79,21 +83,14 @@ func (s *WS) handleDataframe(msgs []rawMsg) (closeWith, error) {
 		switch v := &msgs[i]; v.Event {
 		case frameEventUnspecified: // server response to request
 			s.fm.pub(v)
-		case frameEventProps: // server event update
-			e, err := v.entityMsg()
-			if err != nil {
-				return closeWith{status: websocket.StatusInternalError, msg: err.Error()}, err
-			}
-			s.entityHandler(e)
 		case frameEventClock:
 			// unimplemented rn
+		case frameEventProps: // server event update
+			return eventHandler(v.entityMsg, s.entityHandler)
 		case frameEventChart:
-			c, err := v.chart()
-			if err != nil {
-				return closeWith{status: websocket.StatusInternalError, msg: err.Error()}, err
-			}
-			s.chartHandler(c)
+			return eventHandler(v.chart, s.chartHandler)
 		case frameEventMd:
+			return eventHandler(v.marketData, s.marketDataHandler)
 		case frameEventShutdown:
 			x, err := v.shutdownMsg()
 			if err != nil {
@@ -106,6 +103,15 @@ func (s *WS) handleDataframe(msgs []rawMsg) (closeWith, error) {
 		}
 	}
 
+	return closeWith{}, nil
+}
+
+func eventHandler[X any](fn func() (X, error), handler func(X)) (closeWith, error) {
+	e, err := fn()
+	if err != nil {
+		return closeWith{status: websocket.StatusInternalError, msg: err.Error()}, err
+	}
+	handler(e)
 	return closeWith{}, nil
 }
 

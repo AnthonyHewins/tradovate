@@ -8,7 +8,8 @@ import (
 type OrderErrReason byte
 
 const (
-	OrderErrReasonAccountUnspecified OrderErrReason = iota
+	OrderErrReasonSuccess OrderErrReason = iota
+	OrderErrReasonAccountUnspecified
 	OrderErrReasonAccountClosed
 	OrderErrReasonAdvancedTrailingStopUnsupported
 	OrderErrReasonAnotherCommandPending
@@ -31,7 +32,6 @@ const (
 	OrderErrReasonParentRejected
 	OrderErrReasonRiskCheckTimeout
 	OrderErrReasonSessionClosed
-	OrderErrReasonSuccess
 	OrderErrReasonTooLate
 	OrderErrReasonTradingLocked
 	OrderErrReasonTrailingStopNonOrderQtyModify

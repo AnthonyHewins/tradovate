@@ -8,23 +8,23 @@ import (
 const placeOrderPath = "order/placeorder"
 
 type OrderReq struct {
-	AccountSpec    string    `json:"accountSpec"` // <= 64 chars: account username
-	AccountID      int       `json:"accountId"`
-	ClOrdId        string    `json:"clOrdId"` // string <= 64 characters
+	AccountSpec    string    `json:"accountSpec,omitempty"` // <= 64 chars: account username
+	AccountID      int       `json:"accountId,omitempty"`
+	ClOrdId        string    `json:"clOrdId,omitempty"` // string <= 64 characters
 	Action         Action    `json:"action"`
 	Symbol         string    `json:"symbol"` // string <= 64 characters
 	OrderQty       uint32    `json:"orderQty"`
 	OrderType      OrderType `json:"orderType"`
-	Price          float64   `json:"price"`
-	StopPrice      float64   `json:"stopPrice"`
-	MaxShow        uint32    `json:"maxShow"`
-	PegDifference  float64   `json:"pegDifference"`
-	TimeInForce    Tif       `json:"timeInForce"`
-	ExpireTime     time.Time `json:"expireTime"`
-	Text           string    `json:"text"`
-	ActivationTime time.Time `json:"activationTime"`
-	CustomTag50    string    `json:"customTag50"`
-	IsAutomated    bool      `json:"isAutomated"`
+	Price          float64   `json:"price,omitempty"`
+	StopPrice      float64   `json:"stopPrice,omitempty"`
+	MaxShow        uint32    `json:"maxShow,omitempty"`
+	PegDifference  float64   `json:"pegDifference,omitempty"`
+	TimeInForce    Tif       `json:"timeInForce,omitempty"`
+	ExpireTime     time.Time `json:"expireTime,omitempty"`
+	Text           string    `json:"text,omitempty"`
+	ActivationTime time.Time `json:"activationTime,omitempty"`
+	CustomTag50    string    `json:"customTag50,omitempty"`
+	IsAutomated    bool      `json:"isAutomated,omitempty"`
 }
 
 func (s *WS) PlaceOrder(ctx context.Context, r *OrderReq) (orderID int, err error) {

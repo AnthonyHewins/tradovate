@@ -39,7 +39,7 @@ func (s *WS) PlaceOrder(ctx context.Context, r *OrderReq) (orderID int, err erro
 		return 0, err
 	}
 
-	if o.Err == OrderErrReasonAccountUnspecified {
+	if o.Err == OrderErrReasonSuccess {
 		return o.ID, nil
 	}
 

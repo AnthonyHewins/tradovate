@@ -49,7 +49,7 @@ func (s *WS) OSO(ctx context.Context, o *OsoReq) (*OsoResp, error) {
 		return nil, err
 	}
 
-	if x.FailReason == OrderErrReasonAccountUnspecified {
+	if x.FailReason == OrderErrReasonSuccess {
 		return nil, &OrderErr{Reason: x.FailReason, Text: x.FailText}
 	}
 

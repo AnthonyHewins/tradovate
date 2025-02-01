@@ -63,7 +63,7 @@ func (s *WS) OCO(ctx context.Context, o *OcoReq) (*OcoResp, error) {
 		return nil, err
 	}
 
-	if x.FailReason == OrderErrReasonAccountUnspecified {
+	if x.FailReason == OrderErrReasonSuccess {
 		return &OcoResp{OrderID: x.OrderID, OcoID: x.OcoID}, nil
 	}
 

@@ -8,11 +8,11 @@ import (
 	"strings"
 )
 
-const _OrderErrReasonName = "AccountUnspecifiedAccountClosedAdvancedTrailingStopUnsupportedAnotherCommandPendingBackMonthProhibitedExecutionProviderNotConfiguredExecutionProviderUnavailableInvalidContractInvalidPriceLiquidationOnlyLiquidationOnlyBeforeExpirationMaxOrderQtyIsNotSpecifiedMaxOrderQtyLimitReachedMaxPosLimitMisconfiguredMaxPosLimitReachedMaxTotalPosLimitReachedMultipleAccountPlanRequiredNoQuoteNotEnoughLiquidityOtherExecutionRelatedParentRejectedRiskCheckTimeoutSessionClosedSuccessTooLateTradingLockedTrailingStopNonOrderQtyModifyUnauthorizedUnknownReasonUnsupported"
+const _OrderErrReasonName = "SuccessAccountUnspecifiedAccountClosedAdvancedTrailingStopUnsupportedAnotherCommandPendingBackMonthProhibitedExecutionProviderNotConfiguredExecutionProviderUnavailableInvalidContractInvalidPriceLiquidationOnlyLiquidationOnlyBeforeExpirationMaxOrderQtyIsNotSpecifiedMaxOrderQtyLimitReachedMaxPosLimitMisconfiguredMaxPosLimitReachedMaxTotalPosLimitReachedMultipleAccountPlanRequiredNoQuoteNotEnoughLiquidityOtherExecutionRelatedParentRejectedRiskCheckTimeoutSessionClosedTooLateTradingLockedTrailingStopNonOrderQtyModifyUnauthorizedUnknownReasonUnsupported"
 
-var _OrderErrReasonIndex = [...]uint16{0, 18, 31, 62, 83, 102, 132, 160, 175, 187, 202, 233, 258, 281, 305, 323, 346, 373, 380, 398, 419, 433, 449, 462, 469, 476, 489, 518, 530, 543, 554}
+var _OrderErrReasonIndex = [...]uint16{0, 7, 25, 38, 69, 90, 109, 139, 167, 182, 194, 209, 240, 265, 288, 312, 330, 353, 380, 387, 405, 426, 440, 456, 469, 476, 489, 518, 530, 543, 554}
 
-const _OrderErrReasonLowerName = "accountunspecifiedaccountclosedadvancedtrailingstopunsupportedanothercommandpendingbackmonthprohibitedexecutionprovidernotconfiguredexecutionproviderunavailableinvalidcontractinvalidpriceliquidationonlyliquidationonlybeforeexpirationmaxorderqtyisnotspecifiedmaxorderqtylimitreachedmaxposlimitmisconfiguredmaxposlimitreachedmaxtotalposlimitreachedmultipleaccountplanrequirednoquotenotenoughliquidityotherexecutionrelatedparentrejectedriskchecktimeoutsessionclosedsuccesstoolatetradinglockedtrailingstopnonorderqtymodifyunauthorizedunknownreasonunsupported"
+const _OrderErrReasonLowerName = "successaccountunspecifiedaccountclosedadvancedtrailingstopunsupportedanothercommandpendingbackmonthprohibitedexecutionprovidernotconfiguredexecutionproviderunavailableinvalidcontractinvalidpriceliquidationonlyliquidationonlybeforeexpirationmaxorderqtyisnotspecifiedmaxorderqtylimitreachedmaxposlimitmisconfiguredmaxposlimitreachedmaxtotalposlimitreachedmultipleaccountplanrequirednoquotenotenoughliquidityotherexecutionrelatedparentrejectedriskchecktimeoutsessionclosedtoolatetradinglockedtrailingstopnonorderqtymodifyunauthorizedunknownreasonunsupported"
 
 func (i OrderErrReason) String() string {
 	if i >= OrderErrReason(len(_OrderErrReasonIndex)-1) {
@@ -25,30 +25,30 @@ func (i OrderErrReason) String() string {
 // Re-run the stringer command to generate them again.
 func _OrderErrReasonNoOp() {
 	var x [1]struct{}
-	_ = x[OrderErrReasonAccountUnspecified-(0)]
-	_ = x[OrderErrReasonAccountClosed-(1)]
-	_ = x[OrderErrReasonAdvancedTrailingStopUnsupported-(2)]
-	_ = x[OrderErrReasonAnotherCommandPending-(3)]
-	_ = x[OrderErrReasonBackMonthProhibited-(4)]
-	_ = x[OrderErrReasonExecutionProviderNotConfigured-(5)]
-	_ = x[OrderErrReasonExecutionProviderUnavailable-(6)]
-	_ = x[OrderErrReasonInvalidContract-(7)]
-	_ = x[OrderErrReasonInvalidPrice-(8)]
-	_ = x[OrderErrReasonLiquidationOnly-(9)]
-	_ = x[OrderErrReasonLiquidationOnlyBeforeExpiration-(10)]
-	_ = x[OrderErrReasonMaxOrderQtyIsNotSpecified-(11)]
-	_ = x[OrderErrReasonMaxOrderQtyLimitReached-(12)]
-	_ = x[OrderErrReasonMaxPosLimitMisconfigured-(13)]
-	_ = x[OrderErrReasonMaxPosLimitReached-(14)]
-	_ = x[OrderErrReasonMaxTotalPosLimitReached-(15)]
-	_ = x[OrderErrReasonMultipleAccountPlanRequired-(16)]
-	_ = x[OrderErrReasonNoQuote-(17)]
-	_ = x[OrderErrReasonNotEnoughLiquidity-(18)]
-	_ = x[OrderErrReasonOtherExecutionRelated-(19)]
-	_ = x[OrderErrReasonParentRejected-(20)]
-	_ = x[OrderErrReasonRiskCheckTimeout-(21)]
-	_ = x[OrderErrReasonSessionClosed-(22)]
-	_ = x[OrderErrReasonSuccess-(23)]
+	_ = x[OrderErrReasonSuccess-(0)]
+	_ = x[OrderErrReasonAccountUnspecified-(1)]
+	_ = x[OrderErrReasonAccountClosed-(2)]
+	_ = x[OrderErrReasonAdvancedTrailingStopUnsupported-(3)]
+	_ = x[OrderErrReasonAnotherCommandPending-(4)]
+	_ = x[OrderErrReasonBackMonthProhibited-(5)]
+	_ = x[OrderErrReasonExecutionProviderNotConfigured-(6)]
+	_ = x[OrderErrReasonExecutionProviderUnavailable-(7)]
+	_ = x[OrderErrReasonInvalidContract-(8)]
+	_ = x[OrderErrReasonInvalidPrice-(9)]
+	_ = x[OrderErrReasonLiquidationOnly-(10)]
+	_ = x[OrderErrReasonLiquidationOnlyBeforeExpiration-(11)]
+	_ = x[OrderErrReasonMaxOrderQtyIsNotSpecified-(12)]
+	_ = x[OrderErrReasonMaxOrderQtyLimitReached-(13)]
+	_ = x[OrderErrReasonMaxPosLimitMisconfigured-(14)]
+	_ = x[OrderErrReasonMaxPosLimitReached-(15)]
+	_ = x[OrderErrReasonMaxTotalPosLimitReached-(16)]
+	_ = x[OrderErrReasonMultipleAccountPlanRequired-(17)]
+	_ = x[OrderErrReasonNoQuote-(18)]
+	_ = x[OrderErrReasonNotEnoughLiquidity-(19)]
+	_ = x[OrderErrReasonOtherExecutionRelated-(20)]
+	_ = x[OrderErrReasonParentRejected-(21)]
+	_ = x[OrderErrReasonRiskCheckTimeout-(22)]
+	_ = x[OrderErrReasonSessionClosed-(23)]
 	_ = x[OrderErrReasonTooLate-(24)]
 	_ = x[OrderErrReasonTradingLocked-(25)]
 	_ = x[OrderErrReasonTrailingStopNonOrderQtyModify-(26)]
@@ -57,57 +57,57 @@ func _OrderErrReasonNoOp() {
 	_ = x[OrderErrReasonUnsupported-(29)]
 }
 
-var _OrderErrReasonValues = []OrderErrReason{OrderErrReasonAccountUnspecified, OrderErrReasonAccountClosed, OrderErrReasonAdvancedTrailingStopUnsupported, OrderErrReasonAnotherCommandPending, OrderErrReasonBackMonthProhibited, OrderErrReasonExecutionProviderNotConfigured, OrderErrReasonExecutionProviderUnavailable, OrderErrReasonInvalidContract, OrderErrReasonInvalidPrice, OrderErrReasonLiquidationOnly, OrderErrReasonLiquidationOnlyBeforeExpiration, OrderErrReasonMaxOrderQtyIsNotSpecified, OrderErrReasonMaxOrderQtyLimitReached, OrderErrReasonMaxPosLimitMisconfigured, OrderErrReasonMaxPosLimitReached, OrderErrReasonMaxTotalPosLimitReached, OrderErrReasonMultipleAccountPlanRequired, OrderErrReasonNoQuote, OrderErrReasonNotEnoughLiquidity, OrderErrReasonOtherExecutionRelated, OrderErrReasonParentRejected, OrderErrReasonRiskCheckTimeout, OrderErrReasonSessionClosed, OrderErrReasonSuccess, OrderErrReasonTooLate, OrderErrReasonTradingLocked, OrderErrReasonTrailingStopNonOrderQtyModify, OrderErrReasonUnauthorized, OrderErrReasonUnknownReason, OrderErrReasonUnsupported}
+var _OrderErrReasonValues = []OrderErrReason{OrderErrReasonSuccess, OrderErrReasonAccountUnspecified, OrderErrReasonAccountClosed, OrderErrReasonAdvancedTrailingStopUnsupported, OrderErrReasonAnotherCommandPending, OrderErrReasonBackMonthProhibited, OrderErrReasonExecutionProviderNotConfigured, OrderErrReasonExecutionProviderUnavailable, OrderErrReasonInvalidContract, OrderErrReasonInvalidPrice, OrderErrReasonLiquidationOnly, OrderErrReasonLiquidationOnlyBeforeExpiration, OrderErrReasonMaxOrderQtyIsNotSpecified, OrderErrReasonMaxOrderQtyLimitReached, OrderErrReasonMaxPosLimitMisconfigured, OrderErrReasonMaxPosLimitReached, OrderErrReasonMaxTotalPosLimitReached, OrderErrReasonMultipleAccountPlanRequired, OrderErrReasonNoQuote, OrderErrReasonNotEnoughLiquidity, OrderErrReasonOtherExecutionRelated, OrderErrReasonParentRejected, OrderErrReasonRiskCheckTimeout, OrderErrReasonSessionClosed, OrderErrReasonTooLate, OrderErrReasonTradingLocked, OrderErrReasonTrailingStopNonOrderQtyModify, OrderErrReasonUnauthorized, OrderErrReasonUnknownReason, OrderErrReasonUnsupported}
 
 var _OrderErrReasonNameToValueMap = map[string]OrderErrReason{
-	_OrderErrReasonName[0:18]:         OrderErrReasonAccountUnspecified,
-	_OrderErrReasonLowerName[0:18]:    OrderErrReasonAccountUnspecified,
-	_OrderErrReasonName[18:31]:        OrderErrReasonAccountClosed,
-	_OrderErrReasonLowerName[18:31]:   OrderErrReasonAccountClosed,
-	_OrderErrReasonName[31:62]:        OrderErrReasonAdvancedTrailingStopUnsupported,
-	_OrderErrReasonLowerName[31:62]:   OrderErrReasonAdvancedTrailingStopUnsupported,
-	_OrderErrReasonName[62:83]:        OrderErrReasonAnotherCommandPending,
-	_OrderErrReasonLowerName[62:83]:   OrderErrReasonAnotherCommandPending,
-	_OrderErrReasonName[83:102]:       OrderErrReasonBackMonthProhibited,
-	_OrderErrReasonLowerName[83:102]:  OrderErrReasonBackMonthProhibited,
-	_OrderErrReasonName[102:132]:      OrderErrReasonExecutionProviderNotConfigured,
-	_OrderErrReasonLowerName[102:132]: OrderErrReasonExecutionProviderNotConfigured,
-	_OrderErrReasonName[132:160]:      OrderErrReasonExecutionProviderUnavailable,
-	_OrderErrReasonLowerName[132:160]: OrderErrReasonExecutionProviderUnavailable,
-	_OrderErrReasonName[160:175]:      OrderErrReasonInvalidContract,
-	_OrderErrReasonLowerName[160:175]: OrderErrReasonInvalidContract,
-	_OrderErrReasonName[175:187]:      OrderErrReasonInvalidPrice,
-	_OrderErrReasonLowerName[175:187]: OrderErrReasonInvalidPrice,
-	_OrderErrReasonName[187:202]:      OrderErrReasonLiquidationOnly,
-	_OrderErrReasonLowerName[187:202]: OrderErrReasonLiquidationOnly,
-	_OrderErrReasonName[202:233]:      OrderErrReasonLiquidationOnlyBeforeExpiration,
-	_OrderErrReasonLowerName[202:233]: OrderErrReasonLiquidationOnlyBeforeExpiration,
-	_OrderErrReasonName[233:258]:      OrderErrReasonMaxOrderQtyIsNotSpecified,
-	_OrderErrReasonLowerName[233:258]: OrderErrReasonMaxOrderQtyIsNotSpecified,
-	_OrderErrReasonName[258:281]:      OrderErrReasonMaxOrderQtyLimitReached,
-	_OrderErrReasonLowerName[258:281]: OrderErrReasonMaxOrderQtyLimitReached,
-	_OrderErrReasonName[281:305]:      OrderErrReasonMaxPosLimitMisconfigured,
-	_OrderErrReasonLowerName[281:305]: OrderErrReasonMaxPosLimitMisconfigured,
-	_OrderErrReasonName[305:323]:      OrderErrReasonMaxPosLimitReached,
-	_OrderErrReasonLowerName[305:323]: OrderErrReasonMaxPosLimitReached,
-	_OrderErrReasonName[323:346]:      OrderErrReasonMaxTotalPosLimitReached,
-	_OrderErrReasonLowerName[323:346]: OrderErrReasonMaxTotalPosLimitReached,
-	_OrderErrReasonName[346:373]:      OrderErrReasonMultipleAccountPlanRequired,
-	_OrderErrReasonLowerName[346:373]: OrderErrReasonMultipleAccountPlanRequired,
-	_OrderErrReasonName[373:380]:      OrderErrReasonNoQuote,
-	_OrderErrReasonLowerName[373:380]: OrderErrReasonNoQuote,
-	_OrderErrReasonName[380:398]:      OrderErrReasonNotEnoughLiquidity,
-	_OrderErrReasonLowerName[380:398]: OrderErrReasonNotEnoughLiquidity,
-	_OrderErrReasonName[398:419]:      OrderErrReasonOtherExecutionRelated,
-	_OrderErrReasonLowerName[398:419]: OrderErrReasonOtherExecutionRelated,
-	_OrderErrReasonName[419:433]:      OrderErrReasonParentRejected,
-	_OrderErrReasonLowerName[419:433]: OrderErrReasonParentRejected,
-	_OrderErrReasonName[433:449]:      OrderErrReasonRiskCheckTimeout,
-	_OrderErrReasonLowerName[433:449]: OrderErrReasonRiskCheckTimeout,
-	_OrderErrReasonName[449:462]:      OrderErrReasonSessionClosed,
-	_OrderErrReasonLowerName[449:462]: OrderErrReasonSessionClosed,
-	_OrderErrReasonName[462:469]:      OrderErrReasonSuccess,
-	_OrderErrReasonLowerName[462:469]: OrderErrReasonSuccess,
+	_OrderErrReasonName[0:7]:          OrderErrReasonSuccess,
+	_OrderErrReasonLowerName[0:7]:     OrderErrReasonSuccess,
+	_OrderErrReasonName[7:25]:         OrderErrReasonAccountUnspecified,
+	_OrderErrReasonLowerName[7:25]:    OrderErrReasonAccountUnspecified,
+	_OrderErrReasonName[25:38]:        OrderErrReasonAccountClosed,
+	_OrderErrReasonLowerName[25:38]:   OrderErrReasonAccountClosed,
+	_OrderErrReasonName[38:69]:        OrderErrReasonAdvancedTrailingStopUnsupported,
+	_OrderErrReasonLowerName[38:69]:   OrderErrReasonAdvancedTrailingStopUnsupported,
+	_OrderErrReasonName[69:90]:        OrderErrReasonAnotherCommandPending,
+	_OrderErrReasonLowerName[69:90]:   OrderErrReasonAnotherCommandPending,
+	_OrderErrReasonName[90:109]:       OrderErrReasonBackMonthProhibited,
+	_OrderErrReasonLowerName[90:109]:  OrderErrReasonBackMonthProhibited,
+	_OrderErrReasonName[109:139]:      OrderErrReasonExecutionProviderNotConfigured,
+	_OrderErrReasonLowerName[109:139]: OrderErrReasonExecutionProviderNotConfigured,
+	_OrderErrReasonName[139:167]:      OrderErrReasonExecutionProviderUnavailable,
+	_OrderErrReasonLowerName[139:167]: OrderErrReasonExecutionProviderUnavailable,
+	_OrderErrReasonName[167:182]:      OrderErrReasonInvalidContract,
+	_OrderErrReasonLowerName[167:182]: OrderErrReasonInvalidContract,
+	_OrderErrReasonName[182:194]:      OrderErrReasonInvalidPrice,
+	_OrderErrReasonLowerName[182:194]: OrderErrReasonInvalidPrice,
+	_OrderErrReasonName[194:209]:      OrderErrReasonLiquidationOnly,
+	_OrderErrReasonLowerName[194:209]: OrderErrReasonLiquidationOnly,
+	_OrderErrReasonName[209:240]:      OrderErrReasonLiquidationOnlyBeforeExpiration,
+	_OrderErrReasonLowerName[209:240]: OrderErrReasonLiquidationOnlyBeforeExpiration,
+	_OrderErrReasonName[240:265]:      OrderErrReasonMaxOrderQtyIsNotSpecified,
+	_OrderErrReasonLowerName[240:265]: OrderErrReasonMaxOrderQtyIsNotSpecified,
+	_OrderErrReasonName[265:288]:      OrderErrReasonMaxOrderQtyLimitReached,
+	_OrderErrReasonLowerName[265:288]: OrderErrReasonMaxOrderQtyLimitReached,
+	_OrderErrReasonName[288:312]:      OrderErrReasonMaxPosLimitMisconfigured,
+	_OrderErrReasonLowerName[288:312]: OrderErrReasonMaxPosLimitMisconfigured,
+	_OrderErrReasonName[312:330]:      OrderErrReasonMaxPosLimitReached,
+	_OrderErrReasonLowerName[312:330]: OrderErrReasonMaxPosLimitReached,
+	_OrderErrReasonName[330:353]:      OrderErrReasonMaxTotalPosLimitReached,
+	_OrderErrReasonLowerName[330:353]: OrderErrReasonMaxTotalPosLimitReached,
+	_OrderErrReasonName[353:380]:      OrderErrReasonMultipleAccountPlanRequired,
+	_OrderErrReasonLowerName[353:380]: OrderErrReasonMultipleAccountPlanRequired,
+	_OrderErrReasonName[380:387]:      OrderErrReasonNoQuote,
+	_OrderErrReasonLowerName[380:387]: OrderErrReasonNoQuote,
+	_OrderErrReasonName[387:405]:      OrderErrReasonNotEnoughLiquidity,
+	_OrderErrReasonLowerName[387:405]: OrderErrReasonNotEnoughLiquidity,
+	_OrderErrReasonName[405:426]:      OrderErrReasonOtherExecutionRelated,
+	_OrderErrReasonLowerName[405:426]: OrderErrReasonOtherExecutionRelated,
+	_OrderErrReasonName[426:440]:      OrderErrReasonParentRejected,
+	_OrderErrReasonLowerName[426:440]: OrderErrReasonParentRejected,
+	_OrderErrReasonName[440:456]:      OrderErrReasonRiskCheckTimeout,
+	_OrderErrReasonLowerName[440:456]: OrderErrReasonRiskCheckTimeout,
+	_OrderErrReasonName[456:469]:      OrderErrReasonSessionClosed,
+	_OrderErrReasonLowerName[456:469]: OrderErrReasonSessionClosed,
 	_OrderErrReasonName[469:476]:      OrderErrReasonTooLate,
 	_OrderErrReasonLowerName[469:476]: OrderErrReasonTooLate,
 	_OrderErrReasonName[476:489]:      OrderErrReasonTradingLocked,
@@ -123,30 +123,30 @@ var _OrderErrReasonNameToValueMap = map[string]OrderErrReason{
 }
 
 var _OrderErrReasonNames = []string{
-	_OrderErrReasonName[0:18],
-	_OrderErrReasonName[18:31],
-	_OrderErrReasonName[31:62],
-	_OrderErrReasonName[62:83],
-	_OrderErrReasonName[83:102],
-	_OrderErrReasonName[102:132],
-	_OrderErrReasonName[132:160],
-	_OrderErrReasonName[160:175],
-	_OrderErrReasonName[175:187],
-	_OrderErrReasonName[187:202],
-	_OrderErrReasonName[202:233],
-	_OrderErrReasonName[233:258],
-	_OrderErrReasonName[258:281],
-	_OrderErrReasonName[281:305],
-	_OrderErrReasonName[305:323],
-	_OrderErrReasonName[323:346],
-	_OrderErrReasonName[346:373],
-	_OrderErrReasonName[373:380],
-	_OrderErrReasonName[380:398],
-	_OrderErrReasonName[398:419],
-	_OrderErrReasonName[419:433],
-	_OrderErrReasonName[433:449],
-	_OrderErrReasonName[449:462],
-	_OrderErrReasonName[462:469],
+	_OrderErrReasonName[0:7],
+	_OrderErrReasonName[7:25],
+	_OrderErrReasonName[25:38],
+	_OrderErrReasonName[38:69],
+	_OrderErrReasonName[69:90],
+	_OrderErrReasonName[90:109],
+	_OrderErrReasonName[109:139],
+	_OrderErrReasonName[139:167],
+	_OrderErrReasonName[167:182],
+	_OrderErrReasonName[182:194],
+	_OrderErrReasonName[194:209],
+	_OrderErrReasonName[209:240],
+	_OrderErrReasonName[240:265],
+	_OrderErrReasonName[265:288],
+	_OrderErrReasonName[288:312],
+	_OrderErrReasonName[312:330],
+	_OrderErrReasonName[330:353],
+	_OrderErrReasonName[353:380],
+	_OrderErrReasonName[380:387],
+	_OrderErrReasonName[387:405],
+	_OrderErrReasonName[405:426],
+	_OrderErrReasonName[426:440],
+	_OrderErrReasonName[440:456],
+	_OrderErrReasonName[456:469],
 	_OrderErrReasonName[469:476],
 	_OrderErrReasonName[476:489],
 	_OrderErrReasonName[489:518],

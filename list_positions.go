@@ -31,17 +31,7 @@ type Position struct {
 	PrevPrice   float64   `json:"prevPrice"`
 }
 
-func (e *EntityMsg) PositionList() ([]*Position, error) { return decode[[]*Position](e) }
-func (e *EntityMsg) Position() (*Position, error)       { return decode[*Position](e) }
-
-func (e *EntityMsg) MustPositionList() []*Position {
-	d, err := e.PositionList()
-	if err != nil {
-		panic(err)
-	}
-	return d
-}
-
+func (e *EntityMsg) Position() (*Position, error) { return decode[*Position](e) }
 func (e *EntityMsg) MustPosition() *Position {
 	d, err := e.Position()
 	if err != nil {

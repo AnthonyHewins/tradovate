@@ -80,6 +80,16 @@ type Order struct {
 	Admin               bool        `json:"admin"`
 }
 
+func (e *EntityMsg) Order() (*Order, error) { return decode[*Order](e) }
+func (e *EntityMsg) MustOrder() *Order {
+	o, err := e.Order()
+	if err != nil {
+		panic(err)
+	}
+
+	return o
+}
+
 func (s *WS) ListOrders(ctx context.Context) ([]*Order, error) {
 	var x []*Order
 	if err := s.do(ctx, listOrdersPath, nil, nil, &x); err != nil {

@@ -50,6 +50,7 @@ const (
 	EntityTypeMarketDataSubscription
 	EntityTypeMarketDataSubscriptionExchangeScope
 	EntityTypeMarketDataSubscriptionPlan
+	EntityTypeOrder
 	EntityTypeOrderStrategy
 	EntityTypeOrderStrategyLink
 	EntityTypeOrderStrategyType

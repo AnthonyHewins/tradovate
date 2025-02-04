@@ -8,11 +8,11 @@ import (
 	"strings"
 )
 
-const _EntityTypeName = "EntityTypeUnspecifiedEntityTypeAccountEntityTypeAccountRiskStatusEntityTypeAdminAlertEntityTypeAdminAlertSignalEntityTypeCashBalanceEntityTypeCashBalanceLogEntityTypeChatEntityTypeChatMessageEntityTypeClearingHouseEntityTypeCommandEntityTypeCommandReportEntityTypeContactInfoEntityTypeContractEntityTypeContractGroupEntityTypeContractMarginEntityTypeContractMaturityEntityTypeCurrencyEntityTypeCurrencyRateEntityTypeEntitlementEntityTypeExchangeEntityTypeExecutionReportEntityTypeFillEntityTypeFillFeeEntityTypeFillPairEntityTypeMarginSnapshotEntityTypeMarketDataSubscriptionEntityTypeMarketDataSubscriptionExchangeScopeEntityTypeMarketDataSubscriptionPlanEntityTypeOrderStrategyEntityTypeOrderStrategyLinkEntityTypeOrderStrategyTypeEntityTypeOrderVersionEntityTypeOrganizationEntityTypePermissionedAccountAutoLiqEntityTypePositionEntityTypeProductEntityTypeProductMarginEntityTypeProductSessionEntityTypePropertyEntityTypeSecondMarketDataSubscriptionEntityTypeSpreadDefinitionEntityTypeTradingPermissionEntityTypeTradovateSubscriptionEntityTypeTradovateSubscriptionPlanEntityTypeUserEntityTypeUserAccountAutoLiqEntityTypeUserAccountPositionLimitEntityTypeUserAccountRiskParameterEntityTypeUserPluginEntityTypeUserPropertyEntityTypeUserSessionEntityTypeUserSessionStats"
+const _EntityTypeName = "EntityTypeUnspecifiedEntityTypeAccountEntityTypeAccountRiskStatusEntityTypeAdminAlertEntityTypeAdminAlertSignalEntityTypeCashBalanceEntityTypeCashBalanceLogEntityTypeChatEntityTypeChatMessageEntityTypeClearingHouseEntityTypeCommandEntityTypeCommandReportEntityTypeContactInfoEntityTypeContractEntityTypeContractGroupEntityTypeContractMarginEntityTypeContractMaturityEntityTypeCurrencyEntityTypeCurrencyRateEntityTypeEntitlementEntityTypeExchangeEntityTypeExecutionReportEntityTypeFillEntityTypeFillFeeEntityTypeFillPairEntityTypeMarginSnapshotEntityTypeMarketDataSubscriptionEntityTypeMarketDataSubscriptionExchangeScopeEntityTypeMarketDataSubscriptionPlanEntityTypeOrderEntityTypeOrderStrategyEntityTypeOrderStrategyLinkEntityTypeOrderStrategyTypeEntityTypeOrderVersionEntityTypeOrganizationEntityTypePermissionedAccountAutoLiqEntityTypePositionEntityTypeProductEntityTypeProductMarginEntityTypeProductSessionEntityTypePropertyEntityTypeSecondMarketDataSubscriptionEntityTypeSpreadDefinitionEntityTypeTradingPermissionEntityTypeTradovateSubscriptionEntityTypeTradovateSubscriptionPlanEntityTypeUserEntityTypeUserAccountAutoLiqEntityTypeUserAccountPositionLimitEntityTypeUserAccountRiskParameterEntityTypeUserPluginEntityTypeUserPropertyEntityTypeUserSessionEntityTypeUserSessionStats"
 
-var _EntityTypeIndex = [...]uint16{0, 21, 38, 65, 85, 111, 132, 156, 170, 191, 214, 231, 254, 275, 293, 316, 340, 366, 384, 406, 427, 445, 470, 484, 501, 519, 543, 575, 620, 656, 679, 706, 733, 755, 777, 813, 831, 848, 871, 895, 913, 951, 977, 1004, 1035, 1070, 1084, 1112, 1146, 1180, 1200, 1222, 1243, 1269}
+var _EntityTypeIndex = [...]uint16{0, 21, 38, 65, 85, 111, 132, 156, 170, 191, 214, 231, 254, 275, 293, 316, 340, 366, 384, 406, 427, 445, 470, 484, 501, 519, 543, 575, 620, 656, 671, 694, 721, 748, 770, 792, 828, 846, 863, 886, 910, 928, 966, 992, 1019, 1050, 1085, 1099, 1127, 1161, 1195, 1215, 1237, 1258, 1284}
 
-const _EntityTypeLowerName = "entitytypeunspecifiedentitytypeaccountentitytypeaccountriskstatusentitytypeadminalertentitytypeadminalertsignalentitytypecashbalanceentitytypecashbalancelogentitytypechatentitytypechatmessageentitytypeclearinghouseentitytypecommandentitytypecommandreportentitytypecontactinfoentitytypecontractentitytypecontractgroupentitytypecontractmarginentitytypecontractmaturityentitytypecurrencyentitytypecurrencyrateentitytypeentitlemententitytypeexchangeentitytypeexecutionreportentitytypefillentitytypefillfeeentitytypefillpairentitytypemarginsnapshotentitytypemarketdatasubscriptionentitytypemarketdatasubscriptionexchangescopeentitytypemarketdatasubscriptionplanentitytypeorderstrategyentitytypeorderstrategylinkentitytypeorderstrategytypeentitytypeorderversionentitytypeorganizationentitytypepermissionedaccountautoliqentitytypepositionentitytypeproductentitytypeproductmarginentitytypeproductsessionentitytypepropertyentitytypesecondmarketdatasubscriptionentitytypespreaddefinitionentitytypetradingpermissionentitytypetradovatesubscriptionentitytypetradovatesubscriptionplanentitytypeuserentitytypeuseraccountautoliqentitytypeuseraccountpositionlimitentitytypeuseraccountriskparameterentitytypeuserpluginentitytypeuserpropertyentitytypeusersessionentitytypeusersessionstats"
+const _EntityTypeLowerName = "entitytypeunspecifiedentitytypeaccountentitytypeaccountriskstatusentitytypeadminalertentitytypeadminalertsignalentitytypecashbalanceentitytypecashbalancelogentitytypechatentitytypechatmessageentitytypeclearinghouseentitytypecommandentitytypecommandreportentitytypecontactinfoentitytypecontractentitytypecontractgroupentitytypecontractmarginentitytypecontractmaturityentitytypecurrencyentitytypecurrencyrateentitytypeentitlemententitytypeexchangeentitytypeexecutionreportentitytypefillentitytypefillfeeentitytypefillpairentitytypemarginsnapshotentitytypemarketdatasubscriptionentitytypemarketdatasubscriptionexchangescopeentitytypemarketdatasubscriptionplanentitytypeorderentitytypeorderstrategyentitytypeorderstrategylinkentitytypeorderstrategytypeentitytypeorderversionentitytypeorganizationentitytypepermissionedaccountautoliqentitytypepositionentitytypeproductentitytypeproductmarginentitytypeproductsessionentitytypepropertyentitytypesecondmarketdatasubscriptionentitytypespreaddefinitionentitytypetradingpermissionentitytypetradovatesubscriptionentitytypetradovatesubscriptionplanentitytypeuserentitytypeuseraccountautoliqentitytypeuseraccountpositionlimitentitytypeuseraccountriskparameterentitytypeuserpluginentitytypeuserpropertyentitytypeusersessionentitytypeusersessionstats"
 
 func (i EntityType) String() string {
 	if i >= EntityType(len(_EntityTypeIndex)-1) {
@@ -54,33 +54,34 @@ func _EntityTypeNoOp() {
 	_ = x[EntityTypeMarketDataSubscription-(26)]
 	_ = x[EntityTypeMarketDataSubscriptionExchangeScope-(27)]
 	_ = x[EntityTypeMarketDataSubscriptionPlan-(28)]
-	_ = x[EntityTypeOrderStrategy-(29)]
-	_ = x[EntityTypeOrderStrategyLink-(30)]
-	_ = x[EntityTypeOrderStrategyType-(31)]
-	_ = x[EntityTypeOrderVersion-(32)]
-	_ = x[EntityTypeOrganization-(33)]
-	_ = x[EntityTypePermissionedAccountAutoLiq-(34)]
-	_ = x[EntityTypePosition-(35)]
-	_ = x[EntityTypeProduct-(36)]
-	_ = x[EntityTypeProductMargin-(37)]
-	_ = x[EntityTypeProductSession-(38)]
-	_ = x[EntityTypeProperty-(39)]
-	_ = x[EntityTypeSecondMarketDataSubscription-(40)]
-	_ = x[EntityTypeSpreadDefinition-(41)]
-	_ = x[EntityTypeTradingPermission-(42)]
-	_ = x[EntityTypeTradovateSubscription-(43)]
-	_ = x[EntityTypeTradovateSubscriptionPlan-(44)]
-	_ = x[EntityTypeUser-(45)]
-	_ = x[EntityTypeUserAccountAutoLiq-(46)]
-	_ = x[EntityTypeUserAccountPositionLimit-(47)]
-	_ = x[EntityTypeUserAccountRiskParameter-(48)]
-	_ = x[EntityTypeUserPlugin-(49)]
-	_ = x[EntityTypeUserProperty-(50)]
-	_ = x[EntityTypeUserSession-(51)]
-	_ = x[EntityTypeUserSessionStats-(52)]
+	_ = x[EntityTypeOrder-(29)]
+	_ = x[EntityTypeOrderStrategy-(30)]
+	_ = x[EntityTypeOrderStrategyLink-(31)]
+	_ = x[EntityTypeOrderStrategyType-(32)]
+	_ = x[EntityTypeOrderVersion-(33)]
+	_ = x[EntityTypeOrganization-(34)]
+	_ = x[EntityTypePermissionedAccountAutoLiq-(35)]
+	_ = x[EntityTypePosition-(36)]
+	_ = x[EntityTypeProduct-(37)]
+	_ = x[EntityTypeProductMargin-(38)]
+	_ = x[EntityTypeProductSession-(39)]
+	_ = x[EntityTypeProperty-(40)]
+	_ = x[EntityTypeSecondMarketDataSubscription-(41)]
+	_ = x[EntityTypeSpreadDefinition-(42)]
+	_ = x[EntityTypeTradingPermission-(43)]
+	_ = x[EntityTypeTradovateSubscription-(44)]
+	_ = x[EntityTypeTradovateSubscriptionPlan-(45)]
+	_ = x[EntityTypeUser-(46)]
+	_ = x[EntityTypeUserAccountAutoLiq-(47)]
+	_ = x[EntityTypeUserAccountPositionLimit-(48)]
+	_ = x[EntityTypeUserAccountRiskParameter-(49)]
+	_ = x[EntityTypeUserPlugin-(50)]
+	_ = x[EntityTypeUserProperty-(51)]
+	_ = x[EntityTypeUserSession-(52)]
+	_ = x[EntityTypeUserSessionStats-(53)]
 }
 
-var _EntityTypeValues = []EntityType{EntityTypeUnspecified, EntityTypeAccount, EntityTypeAccountRiskStatus, EntityTypeAdminAlert, EntityTypeAdminAlertSignal, EntityTypeCashBalance, EntityTypeCashBalanceLog, EntityTypeChat, EntityTypeChatMessage, EntityTypeClearingHouse, EntityTypeCommand, EntityTypeCommandReport, EntityTypeContactInfo, EntityTypeContract, EntityTypeContractGroup, EntityTypeContractMargin, EntityTypeContractMaturity, EntityTypeCurrency, EntityTypeCurrencyRate, EntityTypeEntitlement, EntityTypeExchange, EntityTypeExecutionReport, EntityTypeFill, EntityTypeFillFee, EntityTypeFillPair, EntityTypeMarginSnapshot, EntityTypeMarketDataSubscription, EntityTypeMarketDataSubscriptionExchangeScope, EntityTypeMarketDataSubscriptionPlan, EntityTypeOrderStrategy, EntityTypeOrderStrategyLink, EntityTypeOrderStrategyType, EntityTypeOrderVersion, EntityTypeOrganization, EntityTypePermissionedAccountAutoLiq, EntityTypePosition, EntityTypeProduct, EntityTypeProductMargin, EntityTypeProductSession, EntityTypeProperty, EntityTypeSecondMarketDataSubscription, EntityTypeSpreadDefinition, EntityTypeTradingPermission, EntityTypeTradovateSubscription, EntityTypeTradovateSubscriptionPlan, EntityTypeUser, EntityTypeUserAccountAutoLiq, EntityTypeUserAccountPositionLimit, EntityTypeUserAccountRiskParameter, EntityTypeUserPlugin, EntityTypeUserProperty, EntityTypeUserSession, EntityTypeUserSessionStats}
+var _EntityTypeValues = []EntityType{EntityTypeUnspecified, EntityTypeAccount, EntityTypeAccountRiskStatus, EntityTypeAdminAlert, EntityTypeAdminAlertSignal, EntityTypeCashBalance, EntityTypeCashBalanceLog, EntityTypeChat, EntityTypeChatMessage, EntityTypeClearingHouse, EntityTypeCommand, EntityTypeCommandReport, EntityTypeContactInfo, EntityTypeContract, EntityTypeContractGroup, EntityTypeContractMargin, EntityTypeContractMaturity, EntityTypeCurrency, EntityTypeCurrencyRate, EntityTypeEntitlement, EntityTypeExchange, EntityTypeExecutionReport, EntityTypeFill, EntityTypeFillFee, EntityTypeFillPair, EntityTypeMarginSnapshot, EntityTypeMarketDataSubscription, EntityTypeMarketDataSubscriptionExchangeScope, EntityTypeMarketDataSubscriptionPlan, EntityTypeOrder, EntityTypeOrderStrategy, EntityTypeOrderStrategyLink, EntityTypeOrderStrategyType, EntityTypeOrderVersion, EntityTypeOrganization, EntityTypePermissionedAccountAutoLiq, EntityTypePosition, EntityTypeProduct, EntityTypeProductMargin, EntityTypeProductSession, EntityTypeProperty, EntityTypeSecondMarketDataSubscription, EntityTypeSpreadDefinition, EntityTypeTradingPermission, EntityTypeTradovateSubscription, EntityTypeTradovateSubscriptionPlan, EntityTypeUser, EntityTypeUserAccountAutoLiq, EntityTypeUserAccountPositionLimit, EntityTypeUserAccountRiskParameter, EntityTypeUserPlugin, EntityTypeUserProperty, EntityTypeUserSession, EntityTypeUserSessionStats}
 
 var _EntityTypeNameToValueMap = map[string]EntityType{
 	_EntityTypeName[0:21]:           EntityTypeUnspecified,
@@ -141,54 +142,56 @@ var _EntityTypeNameToValueMap = map[string]EntityType{
 	_EntityTypeLowerName[575:620]:   EntityTypeMarketDataSubscriptionExchangeScope,
 	_EntityTypeName[620:656]:        EntityTypeMarketDataSubscriptionPlan,
 	_EntityTypeLowerName[620:656]:   EntityTypeMarketDataSubscriptionPlan,
-	_EntityTypeName[656:679]:        EntityTypeOrderStrategy,
-	_EntityTypeLowerName[656:679]:   EntityTypeOrderStrategy,
-	_EntityTypeName[679:706]:        EntityTypeOrderStrategyLink,
-	_EntityTypeLowerName[679:706]:   EntityTypeOrderStrategyLink,
-	_EntityTypeName[706:733]:        EntityTypeOrderStrategyType,
-	_EntityTypeLowerName[706:733]:   EntityTypeOrderStrategyType,
-	_EntityTypeName[733:755]:        EntityTypeOrderVersion,
-	_EntityTypeLowerName[733:755]:   EntityTypeOrderVersion,
-	_EntityTypeName[755:777]:        EntityTypeOrganization,
-	_EntityTypeLowerName[755:777]:   EntityTypeOrganization,
-	_EntityTypeName[777:813]:        EntityTypePermissionedAccountAutoLiq,
-	_EntityTypeLowerName[777:813]:   EntityTypePermissionedAccountAutoLiq,
-	_EntityTypeName[813:831]:        EntityTypePosition,
-	_EntityTypeLowerName[813:831]:   EntityTypePosition,
-	_EntityTypeName[831:848]:        EntityTypeProduct,
-	_EntityTypeLowerName[831:848]:   EntityTypeProduct,
-	_EntityTypeName[848:871]:        EntityTypeProductMargin,
-	_EntityTypeLowerName[848:871]:   EntityTypeProductMargin,
-	_EntityTypeName[871:895]:        EntityTypeProductSession,
-	_EntityTypeLowerName[871:895]:   EntityTypeProductSession,
-	_EntityTypeName[895:913]:        EntityTypeProperty,
-	_EntityTypeLowerName[895:913]:   EntityTypeProperty,
-	_EntityTypeName[913:951]:        EntityTypeSecondMarketDataSubscription,
-	_EntityTypeLowerName[913:951]:   EntityTypeSecondMarketDataSubscription,
-	_EntityTypeName[951:977]:        EntityTypeSpreadDefinition,
-	_EntityTypeLowerName[951:977]:   EntityTypeSpreadDefinition,
-	_EntityTypeName[977:1004]:       EntityTypeTradingPermission,
-	_EntityTypeLowerName[977:1004]:  EntityTypeTradingPermission,
-	_EntityTypeName[1004:1035]:      EntityTypeTradovateSubscription,
-	_EntityTypeLowerName[1004:1035]: EntityTypeTradovateSubscription,
-	_EntityTypeName[1035:1070]:      EntityTypeTradovateSubscriptionPlan,
-	_EntityTypeLowerName[1035:1070]: EntityTypeTradovateSubscriptionPlan,
-	_EntityTypeName[1070:1084]:      EntityTypeUser,
-	_EntityTypeLowerName[1070:1084]: EntityTypeUser,
-	_EntityTypeName[1084:1112]:      EntityTypeUserAccountAutoLiq,
-	_EntityTypeLowerName[1084:1112]: EntityTypeUserAccountAutoLiq,
-	_EntityTypeName[1112:1146]:      EntityTypeUserAccountPositionLimit,
-	_EntityTypeLowerName[1112:1146]: EntityTypeUserAccountPositionLimit,
-	_EntityTypeName[1146:1180]:      EntityTypeUserAccountRiskParameter,
-	_EntityTypeLowerName[1146:1180]: EntityTypeUserAccountRiskParameter,
-	_EntityTypeName[1180:1200]:      EntityTypeUserPlugin,
-	_EntityTypeLowerName[1180:1200]: EntityTypeUserPlugin,
-	_EntityTypeName[1200:1222]:      EntityTypeUserProperty,
-	_EntityTypeLowerName[1200:1222]: EntityTypeUserProperty,
-	_EntityTypeName[1222:1243]:      EntityTypeUserSession,
-	_EntityTypeLowerName[1222:1243]: EntityTypeUserSession,
-	_EntityTypeName[1243:1269]:      EntityTypeUserSessionStats,
-	_EntityTypeLowerName[1243:1269]: EntityTypeUserSessionStats,
+	_EntityTypeName[656:671]:        EntityTypeOrder,
+	_EntityTypeLowerName[656:671]:   EntityTypeOrder,
+	_EntityTypeName[671:694]:        EntityTypeOrderStrategy,
+	_EntityTypeLowerName[671:694]:   EntityTypeOrderStrategy,
+	_EntityTypeName[694:721]:        EntityTypeOrderStrategyLink,
+	_EntityTypeLowerName[694:721]:   EntityTypeOrderStrategyLink,
+	_EntityTypeName[721:748]:        EntityTypeOrderStrategyType,
+	_EntityTypeLowerName[721:748]:   EntityTypeOrderStrategyType,
+	_EntityTypeName[748:770]:        EntityTypeOrderVersion,
+	_EntityTypeLowerName[748:770]:   EntityTypeOrderVersion,
+	_EntityTypeName[770:792]:        EntityTypeOrganization,
+	_EntityTypeLowerName[770:792]:   EntityTypeOrganization,
+	_EntityTypeName[792:828]:        EntityTypePermissionedAccountAutoLiq,
+	_EntityTypeLowerName[792:828]:   EntityTypePermissionedAccountAutoLiq,
+	_EntityTypeName[828:846]:        EntityTypePosition,
+	_EntityTypeLowerName[828:846]:   EntityTypePosition,
+	_EntityTypeName[846:863]:        EntityTypeProduct,
+	_EntityTypeLowerName[846:863]:   EntityTypeProduct,
+	_EntityTypeName[863:886]:        EntityTypeProductMargin,
+	_EntityTypeLowerName[863:886]:   EntityTypeProductMargin,
+	_EntityTypeName[886:910]:        EntityTypeProductSession,
+	_EntityTypeLowerName[886:910]:   EntityTypeProductSession,
+	_EntityTypeName[910:928]:        EntityTypeProperty,
+	_EntityTypeLowerName[910:928]:   EntityTypeProperty,
+	_EntityTypeName[928:966]:        EntityTypeSecondMarketDataSubscription,
+	_EntityTypeLowerName[928:966]:   EntityTypeSecondMarketDataSubscription,
+	_EntityTypeName[966:992]:        EntityTypeSpreadDefinition,
+	_EntityTypeLowerName[966:992]:   EntityTypeSpreadDefinition,
+	_EntityTypeName[992:1019]:       EntityTypeTradingPermission,
+	_EntityTypeLowerName[992:1019]:  EntityTypeTradingPermission,
+	_EntityTypeName[1019:1050]:      EntityTypeTradovateSubscription,
+	_EntityTypeLowerName[1019:1050]: EntityTypeTradovateSubscription,
+	_EntityTypeName[1050:1085]:      EntityTypeTradovateSubscriptionPlan,
+	_EntityTypeLowerName[1050:1085]: EntityTypeTradovateSubscriptionPlan,
+	_EntityTypeName[1085:1099]:      EntityTypeUser,
+	_EntityTypeLowerName[1085:1099]: EntityTypeUser,
+	_EntityTypeName[1099:1127]:      EntityTypeUserAccountAutoLiq,
+	_EntityTypeLowerName[1099:1127]: EntityTypeUserAccountAutoLiq,
+	_EntityTypeName[1127:1161]:      EntityTypeUserAccountPositionLimit,
+	_EntityTypeLowerName[1127:1161]: EntityTypeUserAccountPositionLimit,
+	_EntityTypeName[1161:1195]:      EntityTypeUserAccountRiskParameter,
+	_EntityTypeLowerName[1161:1195]: EntityTypeUserAccountRiskParameter,
+	_EntityTypeName[1195:1215]:      EntityTypeUserPlugin,
+	_EntityTypeLowerName[1195:1215]: EntityTypeUserPlugin,
+	_EntityTypeName[1215:1237]:      EntityTypeUserProperty,
+	_EntityTypeLowerName[1215:1237]: EntityTypeUserProperty,
+	_EntityTypeName[1237:1258]:      EntityTypeUserSession,
+	_EntityTypeLowerName[1237:1258]: EntityTypeUserSession,
+	_EntityTypeName[1258:1284]:      EntityTypeUserSessionStats,
+	_EntityTypeLowerName[1258:1284]: EntityTypeUserSessionStats,
 }
 
 var _EntityTypeNames = []string{
@@ -221,30 +224,31 @@ var _EntityTypeNames = []string{
 	_EntityTypeName[543:575],
 	_EntityTypeName[575:620],
 	_EntityTypeName[620:656],
-	_EntityTypeName[656:679],
-	_EntityTypeName[679:706],
-	_EntityTypeName[706:733],
-	_EntityTypeName[733:755],
-	_EntityTypeName[755:777],
-	_EntityTypeName[777:813],
-	_EntityTypeName[813:831],
-	_EntityTypeName[831:848],
-	_EntityTypeName[848:871],
-	_EntityTypeName[871:895],
-	_EntityTypeName[895:913],
-	_EntityTypeName[913:951],
-	_EntityTypeName[951:977],
-	_EntityTypeName[977:1004],
-	_EntityTypeName[1004:1035],
-	_EntityTypeName[1035:1070],
-	_EntityTypeName[1070:1084],
-	_EntityTypeName[1084:1112],
-	_EntityTypeName[1112:1146],
-	_EntityTypeName[1146:1180],
-	_EntityTypeName[1180:1200],
-	_EntityTypeName[1200:1222],
-	_EntityTypeName[1222:1243],
-	_EntityTypeName[1243:1269],
+	_EntityTypeName[656:671],
+	_EntityTypeName[671:694],
+	_EntityTypeName[694:721],
+	_EntityTypeName[721:748],
+	_EntityTypeName[748:770],
+	_EntityTypeName[770:792],
+	_EntityTypeName[792:828],
+	_EntityTypeName[828:846],
+	_EntityTypeName[846:863],
+	_EntityTypeName[863:886],
+	_EntityTypeName[886:910],
+	_EntityTypeName[910:928],
+	_EntityTypeName[928:966],
+	_EntityTypeName[966:992],
+	_EntityTypeName[992:1019],
+	_EntityTypeName[1019:1050],
+	_EntityTypeName[1050:1085],
+	_EntityTypeName[1085:1099],
+	_EntityTypeName[1099:1127],
+	_EntityTypeName[1127:1161],
+	_EntityTypeName[1161:1195],
+	_EntityTypeName[1195:1215],
+	_EntityTypeName[1215:1237],
+	_EntityTypeName[1237:1258],
+	_EntityTypeName[1258:1284],
 }
 
 // EntityTypeString retrieves an enum value from the enum constants string name.

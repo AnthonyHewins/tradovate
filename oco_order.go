@@ -26,24 +26,24 @@ type OtherOrder struct {
 
 // One-cancels-other order
 type OcoReq struct {
-	AccountSpec    string     `json:"accountSpec"`
-	AccountID      uint       `json:"accountId"`
-	ClOrdID        string     `json:"clOrdId"`
-	Action         Action     `json:"action"`
-	Symbol         string     `json:"symbol"`
-	OrderQty       uint       `json:"orderQty"`
-	OrderType      OrderType  `json:"orderType"`
-	Price          float64    `json:"price"`
-	StopPrice      float64    `json:"stopPrice"`
-	MaxShow        uint32     `json:"maxShow"`
-	PegDifference  float64    `json:"pegDifference"`
-	TimeInForce    Tif        `json:"timeInForce"`
-	ExpireTime     time.Time  `json:"expireTime"`
-	Text           string     `json:"text"`
-	ActivationTime time.Time  `json:"activationTime"`
-	CustomTag50    string     `json:"customTag50"`
-	IsAutomated    bool       `json:"isAutomated"`
-	Other          OtherOrder `json:"other"`
+	AccountSpec    string      `json:"accountSpec"`
+	AccountID      uint        `json:"accountId"`
+	ClOrdID        string      `json:"clOrdId"`
+	Action         Action      `json:"action"`
+	Symbol         string      `json:"symbol"`
+	OrderQty       uint        `json:"orderQty"`
+	OrderType      OrderType   `json:"orderType"`
+	Price          float64     `json:"price"`
+	StopPrice      float64     `json:"stopPrice"`
+	MaxShow        uint32      `json:"maxShow"`
+	PegDifference  float64     `json:"pegDifference"`
+	TimeInForce    Tif         `json:"timeInForce"`
+	ExpireTime     time.Time   `json:"expireTime"`
+	Text           string      `json:"text"`
+	ActivationTime time.Time   `json:"activationTime"`
+	CustomTag50    string      `json:"customTag50"`
+	IsAutomated    bool        `json:"isAutomated"`
+	Other          *OtherOrder `json:"other"`
 }
 
 type OcoResp struct {

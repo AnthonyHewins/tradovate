@@ -8,11 +8,11 @@ import (
 	"strings"
 )
 
-const _OrderStatusName = "UnspecifiedCanceledCompletedExpiredFilledPendingCancelPendingNewPendingReplaceRejectedSuspendedUnknownWorking"
+const _OrderStatusName = "UnknownCanceledCompletedExpiredFilledPendingCancelPendingNewPendingReplaceRejectedSuspendedWorking"
 
-var _OrderStatusIndex = [...]uint8{0, 11, 19, 28, 35, 41, 54, 64, 78, 86, 95, 102, 109}
+var _OrderStatusIndex = [...]uint8{0, 7, 15, 24, 31, 37, 50, 60, 74, 82, 91, 98}
 
-const _OrderStatusLowerName = "unspecifiedcanceledcompletedexpiredfilledpendingcancelpendingnewpendingreplacerejectedsuspendedunknownworking"
+const _OrderStatusLowerName = "unknowncanceledcompletedexpiredfilledpendingcancelpendingnewpendingreplacerejectedsuspendedworking"
 
 func (i OrderStatus) String() string {
 	if i >= OrderStatus(len(_OrderStatusIndex)-1) {
@@ -25,7 +25,7 @@ func (i OrderStatus) String() string {
 // Re-run the stringer command to generate them again.
 func _OrderStatusNoOp() {
 	var x [1]struct{}
-	_ = x[OrderStatusUnspecified-(0)]
+	_ = x[OrderStatusUnknown-(0)]
 	_ = x[OrderStatusCanceled-(1)]
 	_ = x[OrderStatusCompleted-(2)]
 	_ = x[OrderStatusExpired-(3)]
@@ -35,52 +35,48 @@ func _OrderStatusNoOp() {
 	_ = x[OrderStatusPendingReplace-(7)]
 	_ = x[OrderStatusRejected-(8)]
 	_ = x[OrderStatusSuspended-(9)]
-	_ = x[OrderStatusUnknown-(10)]
-	_ = x[OrderStatusWorking-(11)]
+	_ = x[OrderStatusWorking-(10)]
 }
 
-var _OrderStatusValues = []OrderStatus{OrderStatusUnspecified, OrderStatusCanceled, OrderStatusCompleted, OrderStatusExpired, OrderStatusFilled, OrderStatusPendingCancel, OrderStatusPendingNew, OrderStatusPendingReplace, OrderStatusRejected, OrderStatusSuspended, OrderStatusUnknown, OrderStatusWorking}
+var _OrderStatusValues = []OrderStatus{OrderStatusUnknown, OrderStatusCanceled, OrderStatusCompleted, OrderStatusExpired, OrderStatusFilled, OrderStatusPendingCancel, OrderStatusPendingNew, OrderStatusPendingReplace, OrderStatusRejected, OrderStatusSuspended, OrderStatusWorking}
 
 var _OrderStatusNameToValueMap = map[string]OrderStatus{
-	_OrderStatusName[0:11]:         OrderStatusUnspecified,
-	_OrderStatusLowerName[0:11]:    OrderStatusUnspecified,
-	_OrderStatusName[11:19]:        OrderStatusCanceled,
-	_OrderStatusLowerName[11:19]:   OrderStatusCanceled,
-	_OrderStatusName[19:28]:        OrderStatusCompleted,
-	_OrderStatusLowerName[19:28]:   OrderStatusCompleted,
-	_OrderStatusName[28:35]:        OrderStatusExpired,
-	_OrderStatusLowerName[28:35]:   OrderStatusExpired,
-	_OrderStatusName[35:41]:        OrderStatusFilled,
-	_OrderStatusLowerName[35:41]:   OrderStatusFilled,
-	_OrderStatusName[41:54]:        OrderStatusPendingCancel,
-	_OrderStatusLowerName[41:54]:   OrderStatusPendingCancel,
-	_OrderStatusName[54:64]:        OrderStatusPendingNew,
-	_OrderStatusLowerName[54:64]:   OrderStatusPendingNew,
-	_OrderStatusName[64:78]:        OrderStatusPendingReplace,
-	_OrderStatusLowerName[64:78]:   OrderStatusPendingReplace,
-	_OrderStatusName[78:86]:        OrderStatusRejected,
-	_OrderStatusLowerName[78:86]:   OrderStatusRejected,
-	_OrderStatusName[86:95]:        OrderStatusSuspended,
-	_OrderStatusLowerName[86:95]:   OrderStatusSuspended,
-	_OrderStatusName[95:102]:       OrderStatusUnknown,
-	_OrderStatusLowerName[95:102]:  OrderStatusUnknown,
-	_OrderStatusName[102:109]:      OrderStatusWorking,
-	_OrderStatusLowerName[102:109]: OrderStatusWorking,
+	_OrderStatusName[0:7]:        OrderStatusUnknown,
+	_OrderStatusLowerName[0:7]:   OrderStatusUnknown,
+	_OrderStatusName[7:15]:       OrderStatusCanceled,
+	_OrderStatusLowerName[7:15]:  OrderStatusCanceled,
+	_OrderStatusName[15:24]:      OrderStatusCompleted,
+	_OrderStatusLowerName[15:24]: OrderStatusCompleted,
+	_OrderStatusName[24:31]:      OrderStatusExpired,
+	_OrderStatusLowerName[24:31]: OrderStatusExpired,
+	_OrderStatusName[31:37]:      OrderStatusFilled,
+	_OrderStatusLowerName[31:37]: OrderStatusFilled,
+	_OrderStatusName[37:50]:      OrderStatusPendingCancel,
+	_OrderStatusLowerName[37:50]: OrderStatusPendingCancel,
+	_OrderStatusName[50:60]:      OrderStatusPendingNew,
+	_OrderStatusLowerName[50:60]: OrderStatusPendingNew,
+	_OrderStatusName[60:74]:      OrderStatusPendingReplace,
+	_OrderStatusLowerName[60:74]: OrderStatusPendingReplace,
+	_OrderStatusName[74:82]:      OrderStatusRejected,
+	_OrderStatusLowerName[74:82]: OrderStatusRejected,
+	_OrderStatusName[82:91]:      OrderStatusSuspended,
+	_OrderStatusLowerName[82:91]: OrderStatusSuspended,
+	_OrderStatusName[91:98]:      OrderStatusWorking,
+	_OrderStatusLowerName[91:98]: OrderStatusWorking,
 }
 
 var _OrderStatusNames = []string{
-	_OrderStatusName[0:11],
-	_OrderStatusName[11:19],
-	_OrderStatusName[19:28],
-	_OrderStatusName[28:35],
-	_OrderStatusName[35:41],
-	_OrderStatusName[41:54],
-	_OrderStatusName[54:64],
-	_OrderStatusName[64:78],
-	_OrderStatusName[78:86],
-	_OrderStatusName[86:95],
-	_OrderStatusName[95:102],
-	_OrderStatusName[102:109],
+	_OrderStatusName[0:7],
+	_OrderStatusName[7:15],
+	_OrderStatusName[15:24],
+	_OrderStatusName[24:31],
+	_OrderStatusName[31:37],
+	_OrderStatusName[37:50],
+	_OrderStatusName[50:60],
+	_OrderStatusName[60:74],
+	_OrderStatusName[74:82],
+	_OrderStatusName[82:91],
+	_OrderStatusName[91:98],
 }
 
 // OrderStatusString retrieves an enum value from the enum constants string name.

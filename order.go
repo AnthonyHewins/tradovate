@@ -51,7 +51,7 @@ const (
 type OrderStatus byte
 
 const (
-	OrderStatusUnspecified OrderStatus = iota
+	OrderStatusUnknown OrderStatus = iota
 	OrderStatusCanceled
 	OrderStatusCompleted
 	OrderStatusExpired
@@ -61,7 +61,6 @@ const (
 	OrderStatusPendingReplace
 	OrderStatusRejected
 	OrderStatusSuspended
-	OrderStatusUnknown
 	OrderStatusWorking
 )
 

@@ -3,6 +3,8 @@ package tradovate
 import (
 	"context"
 	"time"
+
+	"github.com/goccy/go-json"
 )
 
 const (
@@ -13,10 +15,36 @@ const (
 type Histogram struct {
 	ContractID int                `json:"contractId"`
 	Timestamp  time.Time          `json:"timestamp"`
-	TradeDate  TradeDate          `json:"tradeDate"`
+	TradeDate  time.Time          `json:"tradeDate"` // set to 00:00:00-0500 (NYSE timezone)
 	Base       float64            `json:"base"`
 	Items      map[string]float64 `json:"items"`
 	Refresh    bool               `json:"refresh"`
+}
+
+func (h *Histogram) UnmarshalJSON(b []byte) error {
+	type histogram struct {
+		ContractID int                `json:"contractId"`
+		Timestamp  time.Time          `json:"timestamp"`
+		TradeDate  tradeDate          `json:"tradeDate"`
+		Base       float64            `json:"base"`
+		Items      map[string]float64 `json:"items"`
+		Refresh    bool               `json:"refresh"`
+	}
+
+	var x histogram
+	if err := json.Unmarshal(b, &x); err != nil {
+		return err
+	}
+
+	*h = Histogram{
+		ContractID: x.ContractID,
+		Timestamp:  x.Timestamp,
+		TradeDate:  x.TradeDate.time(),
+		Base:       x.Base,
+		Items:      x.Items,
+		Refresh:    x.Refresh,
+	}
+	return nil
 }
 
 func (s *WS) SubscribeHistogramID(ctx context.Context, id int) error {

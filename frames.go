@@ -1,10 +1,9 @@
 package tradovate
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
-
-	"github.com/goccy/go-json"
 )
 
 var ErrEmptyFrame = errors.New("empty frame received")

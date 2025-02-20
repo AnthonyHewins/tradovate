@@ -11,7 +11,9 @@ import (
 )
 
 const (
-	RESTProd = "https://live.tradovateapi.com/v1"
+	RESTProd       = "https://live.tradovateapi.com/v1"
+	RESTStage      = "https://demo.tradovateapi.com/v1"
+	RESTMarketData = "https://md.tradovateapi.com/v1"
 )
 
 type REST struct {
@@ -22,18 +24,22 @@ type REST struct {
 
 // Credentials for getting a token
 type Creds struct {
-	Name       string    `json:"name"`
-	Password   string    `json:"password"`
-	AppID      string    `json:"appId"`
-	AppVersion string    `json:"appVersion"`
-	CID        string    `json:"cid"`
-	DeviceID   uuid.UUID `json:"deviceId"`
-	Sec        uuid.UUID `json:"sec"`
+	Name     string `json:"name"`
+	Password string `json:"password"`
+
+	AppID      string `json:"appId"`
+	AppVersion string `json:"appVersion"`
+
+	DeviceID uuid.UUID `json:"deviceId"`
+
+	ClientID string    `json:"cid"`
+	Secret   uuid.UUID `json:"sec"`
 }
 
 func NewREST(baseURL string, h *http.Client, o *Creds) *REST {
 	return &REST{
 		tokenManager: tokenManager{creds: o},
+		baseURL:      baseURL,
 		h:            h,
 	}
 }

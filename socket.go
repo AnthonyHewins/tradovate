@@ -7,27 +7,24 @@ import (
 	"strings"
 	"time"
 
+	"encoding/json"
+
 	"github.com/coder/websocket"
-	"github.com/goccy/go-json"
 )
 
 const (
-	WSSSandboxURL = "wss://demo.tradovateapi.com/v1/websocket"
-	WSSReplayURL  = "wss://replay.tradovateapi.com/v1/websocket"
+	WSSMarketDataURL = "wss://md.tradovateapi.com/v1/websocket"
+	WSSSandboxURL    = "wss://demo.tradovateapi.com/v1/websocket"
+	WSSLiveURL       = "wss://live.tradovateapi.com/v1/websocket"
+	WSSReplayURL     = "wss://replay.tradovateapi.com/v1/websocket"
 )
 
 type WSOpt func(s *WS)
 
-// Seed the client with a token if you have it persisted.
-// Skips authentication at the beginning if not expired
-func WithToken(t *Token) WSOpt {
-	return func(s *WS) { s.rest.SetToken(t) }
-}
-
 // Attaches a timeout to each WS request. Defaults to 5s
 // if you don't set
 func WithTimeout(t time.Duration) WSOpt {
-	return func(s *WS) { s.fm.deadline = t }
+	return func(s *WS) { s.fm.timeout = t }
 }
 
 func WithErrHandler(fn func(error)) WSOpt {
@@ -84,13 +81,12 @@ type WS struct {
 }
 
 func NewSocket(ctx context.Context, uri string, dialOpts *websocket.DialOptions, rest *REST, opts ...WSOpt) (*WS, error) {
-	if rest == nil {
-		return nil, fmt.Errorf("missing rest client: need it for auth")
+	if uri == "" {
+		return nil, fmt.Errorf("missing connection URI")
 	}
 
-	ws, _, err := websocket.Dial(ctx, uri, dialOpts)
-	if err != nil {
-		return nil, err
+	if rest == nil {
+		return nil, fmt.Errorf("rest client nil: need rest client to authenticate")
 	}
 
 	connCtx, cancel := context.WithCancel(ctx)
@@ -100,10 +96,9 @@ func NewSocket(ctx context.Context, uri string, dialOpts *websocket.DialOptions,
 		connCtx:     connCtx,
 		connCancel:  cancel,
 		rest:        rest,
-		ws:          ws,
 		fm: fanoutMutex{
-			acc:      1,
-			deadline: time.Second * 5,
+			acc:     1,
+			timeout: time.Second * 5,
 		},
 		entityHandler:     func(em *EntityMsg) {},
 		chartHandler:      func(cr *Chart) {},
@@ -115,11 +110,36 @@ func NewSocket(ctx context.Context, uri string, dialOpts *websocket.DialOptions,
 		v(s)
 	}
 
+	t, err := rest.Token(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed getting initial token: %w", err)
+	}
+
+	s.ws, _, err = websocket.Dial(ctx, uri, dialOpts)
+	if err != nil {
+		return nil, err
+	}
+
+	defer func() {
+		if err != nil {
+			s.ws.Close(websocket.StatusInternalError, "failed initial setup: "+err.Error())
+		}
+	}()
+
+	f, err := s.readFrame(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed reading opening handshake packet with %s: %w", uri, err)
+	}
+
+	if f.frameType() != frameTypeOpen {
+		return nil, fmt.Errorf("protocol broken: frame type should be open, but got %+v", f)
+	}
+
 	go s.keepalive(connCtx)
-	return s, nil
+	return s, s.do(ctx, "authorize", nil, t.AccessToken, nil)
 }
 
-func (s *WS) Close(ctx context.Context) error {
+func (s *WS) Close() error {
 	return s.ws.Close(websocket.StatusNormalClosure, "client initiated close")
 }
 
@@ -139,14 +159,15 @@ func (s *WS) do(ctx context.Context, path string, queryParams url.Values, body, 
 	sb.WriteRune('\n')
 
 	if body != nil {
-		err := json.NewEncoder(&sb).EncodeContext(ctx, body)
+		err := json.NewEncoder(&sb).Encode(body)
 		if err != nil {
 			return err
 		}
 	}
 
-	err := s.ws.Write(ctx, websocket.MessageText, []byte(sb.String()))
-	if err != nil {
+	payload := []byte(sb.String())
+	fmt.Println(string(payload))
+	if err := s.ws.Write(ctx, websocket.MessageText, payload); err != nil {
 		return err
 	}
 
@@ -160,7 +181,7 @@ func (s *WS) do(ctx context.Context, path string, queryParams url.Values, body, 
 	}
 
 	if target != nil {
-		return json.UnmarshalContext(ctx, resp.Data, target)
+		return json.Unmarshal(resp.Data, target)
 	}
 
 	return nil

@@ -2,9 +2,8 @@ package tradovate
 
 import (
 	"context"
+	"encoding/json"
 	"time"
-
-	"github.com/goccy/go-json"
 )
 
 const (

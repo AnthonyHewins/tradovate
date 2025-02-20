@@ -35,7 +35,7 @@ const (
 
 // Time in force
 //
-//go:generate enumer -type Tif -trimprefix TIF
+//go:generate enumer -type Tif -trimprefix Tif -json
 type Tif byte
 
 const (
@@ -65,7 +65,7 @@ const (
 )
 
 type Order struct {
-	ID                  int         `json:"id"`
+	ID                  uint        `json:"id"`
 	AccountID           uint        `json:"accountId"`
 	ContractID          uint        `json:"contractId"`
 	SpreadDefinitionID  uint        `json:"spreadDefinitionId"`

@@ -18,7 +18,7 @@ func (f *fanoutMutex) equal(x *fanoutMutex) bool {
 		}
 	}
 
-	return f.acc == x.acc && f.deadline == x.deadline
+	return f.acc == x.acc && f.timeout == x.timeout
 }
 
 func (f *fanoutMutex) String() string {
@@ -33,7 +33,7 @@ func (f *fanoutMutex) String() string {
 
 	return fmt.Sprintf(
 		"{Acc:%d,\n\tChannels:[%s],\n\tDeadline: %s}",
-		f.acc, sb.String(), f.deadline,
+		f.acc, sb.String(), f.timeout,
 	)
 }
 

@@ -9,7 +9,7 @@ import (
 
 type fanoutMutex struct {
 	mu       sync.Mutex
-	deadline time.Duration
+	timeout  time.Duration
 	acc      int
 	channels []*socketReq
 }
@@ -46,7 +46,7 @@ func (f *fanoutMutex) request() *socketReq {
 
 	c := &socketReq{
 		c:        make(chan *rawMsg, 1),
-		deadline: time.Now().Add(f.deadline),
+		deadline: time.Now().Add(f.timeout),
 		id:       f.acc,
 	}
 	f.acc++

@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"os"
@@ -8,15 +9,40 @@ import (
 	"time"
 
 	"github.com/AnthonyHewins/tradovate"
+	"github.com/google/uuid"
 	"gopkg.in/yaml.v3"
 )
 
 type config struct {
-	Key    string `yaml:"key"`
-	Secret string `yaml:"secret"`
+	Timeout time.Duration `yaml:"timeout"`
+	Creds   creds         `yaml:"creds"`
+	Account account       `yaml:"account"`
 }
 
-var client *tradovate.REST
+type account struct {
+	Spec string `yaml:"spec"`
+	ID   string `yaml:"id"`
+}
+
+type creds struct {
+	Name     string    `yaml:"name"`
+	App      string    `yaml:"appId"`
+	Version  string    `yaml:"appVersion"`
+	DeviceID uuid.UUID `yaml:"deviceID"`
+	Password string    `yaml:"password"`
+	ClientID string    `yaml:"client-id"`
+	Secret   uuid.UUID `yaml:"secret"`
+}
+
+var c client
+
+type client struct {
+	ctx          context.Context
+	ws           *tradovate.WS
+	spec         string
+	id           int
+	chartChannel chan *tradovate.Chart
+}
 
 func TestMain(m *testing.M) {
 	if os.Getenv("INTEGRATION") != "1" {
@@ -29,21 +55,48 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
-	var c config
-	if err := yaml.Unmarshal(buf, c); err != nil {
+	var cfg config
+	if err := yaml.Unmarshal(buf, &cfg); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	client = tradovate.NewREST(tradovate.WSSSandboxURL, &http.Client{Timeout: time.Second * 10}, &tradovate.Creds{
-		Name:       "",
-		Password:   "",
-		AppID:      "",
-		AppVersion: "",
-		CID:        "",
-		DeviceID:   [16]byte{},
-		Sec:        [16]byte{},
+	rest := tradovate.NewREST(tradovate.RESTStage, &http.Client{Timeout: time.Second * 5}, &tradovate.Creds{
+		Name:       cfg.Creds.Name,
+		Password:   cfg.Creds.Password,
+		AppID:      cfg.Creds.App,
+		AppVersion: cfg.Creds.Version,
+		ClientID:   cfg.Creds.ClientID,
+		DeviceID:   cfg.Creds.DeviceID,
+		Secret:     cfg.Creds.Secret,
 	})
 
-	os.Exit(m.Run())
+	exit := 1
+	ctx, cancel := context.WithTimeout(context.Background(), cfg.Timeout)
+	defer func() {
+		cancel()
+		os.Exit(exit)
+	}()
+
+	chartChannel := make(chan *tradovate.Chart, 50)
+	ws, err := tradovate.NewSocket(ctx, tradovate.WSSSandboxURL, nil, rest,
+		tradovate.WithErrHandler(func(err error) { fmt.Println("caught error in err handler:", err) }),
+		tradovate.WithChartHandler(func(c *tradovate.Chart) {
+			chartChannel <- c
+		}),
+	)
+	if err != nil {
+		fmt.Printf("failed creating socket connection for test: %v\n", err)
+		return
+	}
+	defer ws.Close()
+
+	c = client{
+		ctx:          ctx,
+		ws:           ws,
+		spec:         c.spec,
+		id:           c.id,
+		chartChannel: chartChannel,
+	}
+	exit = m.Run()
 }

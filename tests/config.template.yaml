@@ -1,4 +1,13 @@
-# Copy/paste me into tests to run integration tests
-# cp tests/config.template.yaml tests/config.yaml
-key: ""
-secret: ""
+# fill out, rename to config.yaml
+timeout: 5s
+account:
+  spec:
+  id:
+creds:
+  name:
+  password:
+  appId:
+  deviceID:
+  appVersion:
+  client-id:
+  secret:

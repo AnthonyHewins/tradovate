@@ -8,26 +8,27 @@ import (
 )
 
 func TestMarketdata(t *testing.T) {
-	resp, err := c.ws.GetChartSymbol(c.ctx, "ESM7", &tradovate.ChartReq{
+	resp, err := c.md.GetChartSymbol(c.ctx, "ES", &tradovate.ChartReq{
 		UnderlyingType:   tradovate.ChartTypeMinuteBar,
 		ElementSize:      15,
 		ElementSizeUnit:  tradovate.SizeUnitUnderlyingUnits,
 		WithHistogram:    false,
-		ClosestTimestamp: time.Date(2024, 9, 10, 0, 0, 0, 0, time.UTC),
-		AsMuchAsElements: 50,
+		AsFarAsTimestamp: time.Date(2025, 02, 20, 21, 0, 0, 0, time.UTC),
 	})
 
 	if err != nil {
 		t.Errorf("failed fetching chart data: %s", err)
 		return
 	}
-	defer c.ws.CancelChart(c.ctx, resp.HistoricalID)
+	defer c.md.CancelChart(c.ctx, resp.HistoricalID)
 
-	data := []*tradovate.Chart{}
-	for v := range c.chartChannel {
-		data = append(data, v)
+	select {
+	case <-c.ctx.Done():
+		t.Errorf("ctx canceled before data received")
+	case v := <-c.chartChannel:
+		if v == nil {
+			t.Error("should not have gotten nil in chart test from channel")
+			return
+		}
 	}
-
-	t.Errorf("not enough data points in chart stream: %+v", err)
-	return
 }

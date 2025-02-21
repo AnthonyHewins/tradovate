@@ -11,10 +11,12 @@ go get https://github.com/AnthonyHewins/tradovate
 
 ## Usage
 
-The current usage for this package is strictly for the websocket API. The REST client has only the
+The current usage for this package is highly tilted toward the websocket API. The REST client has only the
 functionality to fetch a token. This is on purpose for now, because the websocket offers
 better performance and covers more use cases. Contributing to the REST client is easy if there's
 already implementations available for the socket
+
+For all use cases, you need the rest client:
 
 REST client:
 
@@ -30,7 +32,8 @@ client := tradovate.NewREST(tradovate.SandboxURL, &http.Client{Timeout: time.Sec
 })
 ```
 
-Socket client:
+Socket client requires a rest client. Tradovate requires you to pick the right URL if you want market data or if you
+just plan on interacting with the API. Your connections determines which one
 
 ```go
 client := tradovate.NewREST(tradovate.SandboxURL, &http.Client{Timeout: time.Second * 10}, &tradovate.Creds{

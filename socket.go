@@ -13,10 +13,11 @@ import (
 )
 
 const (
-	WSSMarketDataURL = "wss://md.tradovateapi.com/v1/websocket"
-	WSSSandboxURL    = "wss://demo.tradovateapi.com/v1/websocket"
-	WSSLiveURL       = "wss://live.tradovateapi.com/v1/websocket"
-	WSSReplayURL     = "wss://replay.tradovateapi.com/v1/websocket"
+	WSSMarketDataURL        = "wss://md.tradovateapi.com/v1/websocket"
+	WSSMarketDataSandboxURL = "wss://md-demo.tradovateapi.com/v1/websocket"
+	WSSSandboxURL           = "wss://demo.tradovateapi.com/v1/websocket"
+	WSSLiveURL              = "wss://live.tradovateapi.com/v1/websocket"
+	WSSReplayURL            = "wss://replay.tradovateapi.com/v1/websocket"
 )
 
 type WSOpt func(s *WS)
@@ -176,6 +177,7 @@ func (s *WS) do(ctx context.Context, path string, queryParams url.Values, body, 
 		return err
 	}
 
+	fmt.Println(string(resp.Data))
 	if resp.Status >= 300 {
 		return newRespErrFromSocket(resp)
 	}

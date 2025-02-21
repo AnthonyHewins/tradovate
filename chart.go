@@ -3,14 +3,13 @@ package tradovate
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
 const (
-	getChart    = "md/getChart"
-	cancelChart = "md/cancelChart"
-
-	timestampFmt = "2006-01-02T15:04:05Z"
+	getChart    = "md/getchart"
+	cancelChart = "md/cancelchart"
 )
 
 //go:generate enumer -type ChartType -json -trimprefix ChartType
@@ -55,8 +54,8 @@ type ChartReq struct {
 // This response is sent back to the user when a chart subscription has been enabled.
 // Keep track of the realtime ID to cancel it appropriately
 type ChartResp struct {
-	HistoricalID int `json:"historicalId"`
-	RealtimeID   int `json:"realtimeId"`
+	HistoricalID int
+	RealtimeID   int
 }
 
 type Bar struct {
@@ -131,28 +130,28 @@ func (s *WS) GetChartSymbol(ctx context.Context, symbol string, r *ChartReq) (Ch
 }
 
 func (s *WS) GetChartID(ctx context.Context, id int, r *ChartReq) (ChartResp, error) {
-	return s.getChart(ctx, id, r)
+	return s.getChart(ctx, fmt.Sprint(id), r)
 }
 
-func (s *WS) getChart(ctx context.Context, x any, r *ChartReq) (ChartResp, error) {
+func (s *WS) getChart(ctx context.Context, x string, r *ChartReq) (ChartResp, error) {
 	type chartDesc struct {
-		UnderlyingType  ChartType `json:"underlyingType"`
-		ElementSize     uint32    `json:"elementSize"`
-		ElementSizeUnit SizeUnit  `json:"elementSizeUnit"`
+		UnderlyingType  ChartType `json:"underlyingType,omitzero"`
+		ElementSize     uint32    `json:"elementSize,omitzero"`
+		ElementSizeUnit SizeUnit  `json:"elementSizeUnit,omitzero"`
 		WithHistogram   bool      `json:"withHistogram"`
 	}
 
 	type timeRange struct {
-		ClosestTimestamp string `json:"closestTimestamp"`
-		ClosestTickID    uint32 `json:"closestTickId"`
-		AsFarAsTimestamp string `json:"asFarAsTimestamp"`
-		AsMuchAsElements uint32 `json:"asMuchAsElements"`
+		ClosestTimestamp time.Time `json:"closestTimestamp,omitzero"`
+		ClosestTickID    uint32    `json:"closestTickId,omitzero"`
+		AsFarAsTimestamp time.Time `json:"asFarAsTimestamp,omitzero"`
+		AsMuchAsElements uint32    `json:"asMuchAsElements,omitzero"`
 	}
 
 	type chart struct {
-		Symbol           any       `json:"symbol"`
-		ChartDescription chartDesc `json:"chartDescription"`
-		TimeRange        timeRange `json:"timeRange"`
+		Symbol           string    `json:"symbol,omitzero"`
+		ChartDescription chartDesc `json:"chartDescription,omitzero"`
+		TimeRange        timeRange `json:"timeRange,omitzero"`
 	}
 
 	c := chart{
@@ -164,15 +163,34 @@ func (s *WS) getChart(ctx context.Context, x any, r *ChartReq) (ChartResp, error
 			WithHistogram:   r.WithHistogram,
 		},
 		TimeRange: timeRange{
-			ClosestTimestamp: r.ClosestTimestamp.Format(timestampFmt),
+			ClosestTimestamp: r.ClosestTimestamp,
 			ClosestTickID:    r.ClosestTickID,
-			AsFarAsTimestamp: r.AsFarAsTimestamp.Format(timestampFmt),
+			AsFarAsTimestamp: r.AsFarAsTimestamp,
 			AsMuchAsElements: r.AsMuchAsElements,
 		},
 	}
 
-	var resp ChartResp
-	return resp, s.do(ctx, getChart, nil, &c, &resp)
+	type chartResp struct {
+		Text         string `json:"errorText"`
+		Code         string `json:"errorCode"`
+		Mode         string `json:"mode"`
+		HistoricalID int    `json:"historicalId"`
+		RealtimeID   int    `json:"realtimeId"`
+	}
+
+	var resp chartResp
+	if err := s.do(ctx, getChart, nil, &c, &resp); err != nil {
+		return ChartResp{}, err
+	}
+
+	if resp.Code == "" {
+		return ChartResp{
+			HistoricalID: resp.HistoricalID,
+			RealtimeID:   resp.RealtimeID,
+		}, nil
+	}
+
+	return ChartResp{}, fmt.Errorf("%s (mode: %s): %s", resp.Code, resp.Mode, resp.Text)
 }
 
 // Cancel a chart subscription given the historicalId from ChartResp

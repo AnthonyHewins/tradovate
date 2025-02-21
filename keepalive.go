@@ -22,7 +22,9 @@ func (s *WS) closeErr(err error) {
 		status = websocket.StatusInternalError
 	}
 
-	s.ws.Close(status, err.Error())
+	if err = s.ws.Close(status, err.Error()); err != nil {
+		go s.errHandler(err)
+	}
 }
 
 func (s *WS) keepalive(ctx context.Context) {
@@ -123,7 +125,6 @@ func (s *WS) readFrame(ctx context.Context) (frame, error) {
 		return nil, err
 	}
 
-	fmt.Println(string(binary))
 	return newFrame(binary)
 }
 

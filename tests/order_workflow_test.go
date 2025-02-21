@@ -8,12 +8,12 @@ import (
 )
 
 func TestOrderWorkflow(t *testing.T) {
-	x, err := c.ws.PlaceOrder(c.ctx, &tradovate.OrderReq{
+	x, err := c.api.PlaceOrder(c.ctx, &tradovate.OrderReq{
 		AccountSpec:   c.spec,
 		AccountID:     c.id,
 		ClientOrderID: "asdjoisad",
 		Action:        tradovate.ActionBuy,
-		Symbol:        "NQU2",
+		Symbol:        "NQH5",
 		OrderQty:      1,
 		OrderType:     tradovate.OrderTypeLimit,
 		Price:         0.1,
@@ -28,7 +28,7 @@ func TestOrderWorkflow(t *testing.T) {
 		return
 	}
 
-	o, err := c.ws.ListOrders(c.ctx)
+	o, err := c.api.ListOrders(c.ctx)
 	if err != nil {
 		t.Errorf("failed listing orders: %s", err)
 		return

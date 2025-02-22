@@ -167,7 +167,6 @@ func (s *WS) do(ctx context.Context, path string, queryParams url.Values, body, 
 	}
 
 	payload := []byte(sb.String())
-	fmt.Println(string(payload))
 	if err := s.ws.Write(ctx, websocket.MessageText, payload); err != nil {
 		return err
 	}
@@ -177,7 +176,6 @@ func (s *WS) do(ctx context.Context, path string, queryParams url.Values, body, 
 		return err
 	}
 
-	fmt.Println(string(resp.Data))
 	if resp.Status >= 300 {
 		return newRespErrFromSocket(resp)
 	}

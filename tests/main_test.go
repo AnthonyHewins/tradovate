@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net"
 	"net/http"
 	"os"
 	"testing"
@@ -158,7 +159,12 @@ func TestMain(m *testing.M) {
 	}
 
 	c.md, err = tradovate.NewSocket(ctx, tradovate.WSSMarketDataSandboxURL, nil, rest,
-		tradovate.WithErrHandler(func(err error) { fmt.Println("caught error in marketdata websocket err handler:", err) }),
+		tradovate.WithErrHandler(func(err error) {
+			if errors.Is(err, net.ErrClosed) {
+				return
+			}
+			fmt.Println("caught error in marketdata websocket err handler:", err)
+		}),
 		tradovate.WithChartHandler(func(chart *tradovate.Chart) {
 			fmt.Println(chart)
 			select {

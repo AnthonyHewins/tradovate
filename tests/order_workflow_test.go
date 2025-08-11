@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -16,7 +17,7 @@ func TestOrderWorkflow(t *testing.T) {
 		Symbol:        "NQH5",
 		OrderQty:      1,
 		OrderType:     tradovate.OrderTypeLimit,
-		Price:         0.1,
+		Price:         40,
 		TimeInForce:   tradovate.TifDay,
 		ExpireTime:    time.Now().Add(30 * time.Second),
 		Text:          "integration test order",
@@ -46,6 +47,8 @@ func TestOrderWorkflow(t *testing.T) {
 		return
 	}
 
+	fmt.Println(o)
+	t.Fail()
 	//	if _, err = c.ws.CancelOrder(c.ctx, x); err != nil {
 	//		t.Errorf("failed canceling order during test: %v", err)
 	//		return

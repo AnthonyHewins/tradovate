@@ -28,7 +28,7 @@ type OtherOrder struct {
 type OcoReq struct {
 	AccountSpec    string      `json:"accountSpec"`
 	AccountID      uint        `json:"accountId"`
-	ClOrdID        string      `json:"clOrdId"`
+	ClientID       string      `json:"clOrdId"`
 	Action         Action      `json:"action"`
 	Symbol         string      `json:"symbol"`
 	OrderQty       uint        `json:"orderQty"`

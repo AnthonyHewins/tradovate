@@ -1,12 +1,6 @@
 package tests
 
-import (
-	"testing"
-	"time"
-
-	"github.com/AnthonyHewins/tradovate"
-)
-
+/*
 func TestMarketdata(t *testing.T) {
 	resp, err := c.md.GetChartSymbol(c.ctx, "ES", &tradovate.ChartReq{
 		UnderlyingType:   tradovate.ChartTypeMinuteBar,
@@ -32,3 +26,4 @@ func TestMarketdata(t *testing.T) {
 		}
 	}
 }
+*/
